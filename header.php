@@ -44,6 +44,14 @@
 
       <label for="password"><b>Parola</b></label>
       <input type="password" placeholder="Enter Password" name="password" required>
+
+      <label for="status">Statutul:</label>
+      <select name="status" id="status">
+          <option value="student">Student</option>
+          <option value="prof">Profesor</option>
+          <option value="prof_coord">Profesor Coordonator</option>
+          <option value="secretara">Secretară</option>
+      </select>
         
       <button type="submit">Sign Up</button>
 

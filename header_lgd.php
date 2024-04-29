@@ -7,7 +7,15 @@
     
     <ul>
         
-        <li class="<?php if($currentPage =='index_lgd'){echo 'active';}?>" ><a href="index_logged.php">Acasa</a></li>
+        <li class="<?php if ($currentPage == 'index_lgd' || $currentPage == 'index_prof_lgd') { echo 'active'; } ?>">
+            <?php if ($currentPage == 'index_lgd') { ?>
+                <a href="index_logged.php">Acasa</a>
+            <?php } ?>
+            <?php if ($currentPage == 'index_prof_lgd') { ?>
+                <a href="index_prof_logged.php">Acasa</a>
+            <?php } ?>
+        </li>
+
         <li class="<?php if($currentPage =='proiecte_student'){echo 'active';}?>" ><a href="proiecte_student.php">Proiecte</a></li>
         <li class="<?php if($currentPage =='contact_student'){echo 'active';}?>" ><a href="contact_student.php">Contact</a></li>
         <li style="float:right">

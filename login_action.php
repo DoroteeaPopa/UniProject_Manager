@@ -15,7 +15,7 @@ if ($user) { // if user exists
         session_start();
         $_SESSION['login'] = "user";
         $_SESSION['email'] = $email;
-        if($user['statut']===0){
+        if($user['statut']==0){
             header('Location: index_logged.php');
         }
         else{

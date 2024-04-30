@@ -107,7 +107,7 @@ $db->close();
                 }
         ?>
         
-        <div class="card <?php echo $class; ?>" data-id-student="<?php echo $id_student; ?>" data-id-materie="<?php echo $developer['id_materie']; ?>" id="<?php echo $developer['id_orar']; ?>">
+        <div class="card <?php echo $class; ?>" id="<?php echo $developer['id_orar']; ?>" onclick="window.location.href='detalii_proiect_prof.php?id_materie=<?php echo $developer['id_materie']; ?>&id_profesor=<?php echo $developer['id_profesor']; ?>&semigrupa=<?php echo $developer['nume_ns']; ?>'">
             <h3><?php echo $developer['materie']; ?></h3>
             <p><strong>Profesor:</strong> <?php echo $developer['nume']; ?></p>
             <p><strong>An:</strong> <?php echo $developer['id_an']; ?></p>

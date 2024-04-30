@@ -90,48 +90,8 @@ $db->close();
 
 </head>
 <body>
-<style>
-  #archiveInput {
-    display: none;  /* Ascunde input-ul original */
-  }
-
-  .custom-file-upload {
-    display: inline-block;
-    padding: 8px 16px;
-    cursor: pointer;
-    background-color: #f8f8f8;
-    color: #0D3165; /* Aplică stilul dorit aici */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-</style>
 
 
-
-
-<script>
-function showProjectDetails(cardElement) {
-    var projectDetails = document.getElementById('projectDetails');
-    var idStudent = cardElement.getAttribute('data-id-student'); // Atributul personalizat pentru id-ul studentului
-    var idMaterie = cardElement.getAttribute('data-id-materie');
-    var materie = cardElement.querySelector('h3').innerText;
-
-    projectDetails.innerHTML = `   
-        <h3>Proiect: ${materie}</h3>
-        <p>${cardElement.querySelector('p:nth-child(2)').innerText}</p>
-        <p>${cardElement.querySelector('p:nth-child(3)').innerText}</p>
-        <p>${cardElement.querySelector('p:nth-child(4)').innerText}</p>
-        <form action="incarcaFisier_action.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="id_student" value="${idStudent}">
-            <input type="hidden" name="materie" value="${idMaterie}">
-            <input type="file" name="uploadedFile" accept=".zip,.rar,.7z" id="fileInput" style="display: none;" onchange="this.form.submit()">
-            <label for="fileInput" class="custom-file-upload">Selectează și încarcă fișierul</label>
-        </form>
-        
-    `;
-    projectDetails.style.display = 'block'; // Afișează detaliile proiectului
-}
-</script>
 
 
 
@@ -163,9 +123,10 @@ function showProjectDetails(cardElement) {
                         $class = ''; 
                         break;
                 }
+            }
         ?>
         
-        <div class="card <?php echo $class; ?>" data-id-student="<?php echo $id_student; ?>" data-id-materie="<?php echo $developer['id_materie']; ?>" id="<?php echo $developer['id_orar']; ?>" onclick="showProjectDetails(this)">
+        <div class="card <?php echo $class; ?>" id="<?php echo $developer['id_orar']; ?>" onclick="window.location.href='detalii_proiect_st.php?id_materie=<?php echo $developer['id_materie']; ?>&id_student=<?php echo $id_student; ?>'">
             <h3><?php echo $developer['materie']; ?></h3>
             <p><strong>Profesor:</strong> <?php echo $developer['nume']; ?></p>
             <p><strong>An:</strong> <?php echo $developer['id_an']; ?></p>
@@ -173,13 +134,12 @@ function showProjectDetails(cardElement) {
         </div>
 
         <?php 
-            }
+           
+            
         } 
         ?>
     </div>
 
-
-    <div id="projectDetails"  style=" margin-top: 40px; display: none; padding: 25px; background-color:#add8e6;" > </div>
 
 
 </body>

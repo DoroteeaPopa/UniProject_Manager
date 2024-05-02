@@ -70,6 +70,46 @@ include("config.php");
                 echo "<p><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']) . "</p>";
                 echo "<p><strong>Semestru:</strong> " . htmlspecialchars($details['sem']) . "</p>";
                 echo "<p><strong>Semigrupa:</strong> " . htmlspecialchars($details['nume_ns']) . "</p>";
+
+                 // Interogare pentru a prelua cerințele
+              $sql_cerinte = "SELECT id_cerinte, cerinta FROM cerinte WHERE id_materie =$id_materie";
+              $result_cerinte = $db->query($sql_cerinte); 
+                  echo "<table border='1'>";
+                  echo "<tr><th>Cerință</th><th>Acțiuni</th></tr>";
+                  while ($row = mysqli_fetch_assoc($result_cerinte)) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['cerinta']) . "</td>";
+                    echo "<td>";
+                    echo "<form action='cerinteActions.php?action=edit' method='post'>";
+                    echo "<input type='hidden' name='id_cerinte' value='" . $row['id_cerinte'] . "'>";
+                    echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
+                    echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
+                    echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
+                    echo "<input type='text' name='cerinta_noua' value='" . htmlspecialchars($row['cerinta'], ENT_QUOTES) . "'>";
+                    echo "<button type='submit'>Editează</button>";
+                    echo "</form> ";
+                    echo "<form action='cerinteActions.php?action=delete' method='post'>";
+                    echo "<input type='hidden' name='id_cerinte' value='" . $row['id_cerinte'] . "'>";
+                    echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
+                    echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
+                    echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
+                    echo "<button type='submit' onclick='return confirm(\"Ești sigur că vrei să ștergi această cerință?\");'>Șterge</button>";
+                    echo "</form>";
+                    echo "</td>";
+                    echo "</tr>";
+                  }
+                  echo "</table>";
+
+
+                  echo "<h3>Adaugă o nouă cerință</h3>";
+                  echo "<form action='cerinteActions.php?action=add' method='post'>";
+                  echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
+                  echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
+                  echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
+                  echo "<input type='text' name='cerinta_noua' placeholder='Introdu o nouă cerință'>";
+                  echo "<button type='submit'>Adaugă Cerință</button>";
+                  echo "</form>";
+                  
             ?>
             <?php
             }

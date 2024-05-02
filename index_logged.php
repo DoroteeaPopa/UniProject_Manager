@@ -137,12 +137,8 @@ thead {
           <td><?php echo $developer['an']; ?></td>
         </tr>
         <tr>
-          <td>Grupa</td>
-          <td><?php echo $developer['grupa']; ?></td>
-        </tr>
-        <tr>
           <td>Semigrupa</td>
-          <td><?php echo $developer['semigrupa']; ?></td>
+          <td><?php echo $developer['grupa']; ?></td>
         </tr>
       <?php } ?>
     </tbody>

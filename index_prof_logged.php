@@ -52,7 +52,9 @@ $nume_prof=$developer['nume'];
     ORDER BY nume";
   $result3 = $db->query($sql3);
 
-$db->close();
+
+
+
 ?>
 
 
@@ -122,18 +124,27 @@ thead {
             </thead>
             <tbody style="background-color:#add8e6;">
                 <?php
-                while ($developer = mysqli_fetch_assoc($result3)) { 
-                    
+                while ($developer = mysqli_fetch_assoc($result3)) {
+                  $semigrupa=$developer['nume_ns'];
+                  $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa=$semigrupa";
+                  $result4 = $db->query($sql_count);
+                  $nrSudenti = mysqli_fetch_assoc($result4);
+                  $numar_studenti=$nrSudenti['numar_studenti'];     
                 ?>
+                
                     <tr id="<?php echo $developer['id_orar']; ?>">   
                         <td><?php echo $developer['materie']; ?></td>
                         <td><?php echo $developer['id_an']; ?></td>
                         <td><?php echo $developer['sem']; ?></td>
                         <td><?php echo $developer['nume_ns']; ?></td>
-                        <td></td>
+                        <td><?php echo $numar_studenti; ?></td>
+                        
                     </tr>
+                    
                 <?php 
+                
                     }
+                    $db->close();
                 
                 ?>
             </tbody>

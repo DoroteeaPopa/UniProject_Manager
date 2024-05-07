@@ -48,6 +48,32 @@ include("config.php");
         $id_profesor = $_GET['id_profesor'];
         $semigrupa = $_GET['semigrupa'];
 
+        $parti = explode('/', $semigrupa); 
+        $grupa = $parti[0];
+        if($grupa=="211" || $grupa=="212" || $grupa=="213" || 
+           $grupa=="221" || $grupa=="222" || $grupa=="223" ||
+           $grupa=="231" || $grupa=="232" ||
+           $grupa=="241" || $grupa=="242" )
+        {
+          $specializare="C";
+        }
+        else if($grupa=="214" || $grupa=="215" || $grupa=="224" || $grupa=="233" || $grupa=="243")
+        {
+          $specializare="TI";
+        }
+        else if($grupa=="216" || $grupa=="217" || $grupa=="225" || $grupa=="234" || $grupa=="244")
+        {
+          $specializare="ISM";
+        }
+        else if($grupa=="311" || $grupa=="321" || $grupa=="331" || $grupa=="341")
+        {
+          $specializare="EM";
+        }
+        else if($grupa=="312" || $grupa=="322" || $grupa=="332" || $grupa=="342")
+        {
+          $specializare="EA";
+        }
+
         $sql = "SELECT* 
         FROM orar 
         CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
@@ -74,6 +100,7 @@ include("config.php");
                 echo "<p><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']) . "</p>";
                 echo "<p><strong>Semestru:</strong> " . htmlspecialchars($details['sem']) . "</p>";
                 echo "<p><strong>Semigrupa:</strong> " . htmlspecialchars($details['nume_ns']) . "</p>";
+                echo "<p><strong>Specializare:</strong> " . htmlspecialchars($specializare) . "</p>";
                 echo "<p><strong>Numar studenti:</strong> " . htmlspecialchars($numar_studenti) . "</p>";
 
 
@@ -129,41 +156,82 @@ include("config.php");
             $stmt->close();
 
                         // Continuare cu studentii
-            echo "<h3>Studenți din semigrupa " . htmlspecialchars($semigrupa) . "</h3>";
-            $sql_students = "SELECT s.id_student, s.nume, s.prenume, s.email, u.id_user 
-                            FROM student s 
-                            LEFT JOIN users u ON s.email = u.email 
-                            WHERE s.grupa = ?";
+            echo "<br>";
+            echo "<b>Studenți din semigrupa " . htmlspecialchars($semigrupa) . "</b>";
+            $sql_students = "SELECT s.id_student, s.nume, s.prenume, s.email, u.id_user, n.nota
+                        FROM student s
+                        LEFT JOIN users u ON s.email = u.email
+                        LEFT JOIN note n ON s.id_student = n.id_student AND n.id_materie =$id_materie
+                        WHERE s.grupa =$semigrupa";
+
               
             if ($stmt_students = $db->prepare($sql_students)) {
-                $stmt_students->bind_param("s", $semigrupa);
+                $stmt_students;
                 $stmt_students->execute();
                 $result_students = $stmt_students->get_result();
 
-                echo "<table border='1'>";
-                echo "<tr><th>ID</th><th>Nume</th><th>Prenume</th><th>Email</th><th>Acțiuni</th></tr>";
-                while ($row_student = $result_students->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row_student['id_student']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row_student['nume']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row_student['prenume']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row_student['email']) . "</td>";
-                    echo "<td>";
-                    if (!empty($row_student['id_user'])) {
-                        // Dacă studentul este utilizator, arată butonul pentru arhive
-                        echo "<form action='vizualizeazaArhive_prof.php' method='post'>";
-                        echo "<input type='hidden' name='id_student' value='" . $row_student['id_student'] . "'>";
-                        echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
-                        echo "<button type='submit'>Vezi Arhive</button>";
-                        echo "</form>";
-                    } else {
-                        // Dacă nu este utilizator, afișează un chenar gri
-                        echo "<span style='background-color: #ccc; padding: 5px;'>N/A</span>";
-                    }
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                echo "</table>";
+              echo "<table border='2' style='width: 100%;'>";
+              echo "<tr>";
+              echo "<th style='width: 15%;'>Nume</th>";       // Set width to 15%
+              echo "<th style='width: 15%;'>Prenume</th>";    // Set width to 15%
+              echo "<th style='width: 20%;'>Email</th>";      // Set width to 20%
+              echo "<th style='width: 20%;'>Nota</th>";       // Set width to 20%
+              echo "<th style='width: 30%;'>Acțiuni</th>";    // Width already set to 30%
+              echo "</tr>";
+              while ($row_student = $result_students->fetch_assoc()) {
+                  echo "<tr>";
+                  echo "<td>" . htmlspecialchars($row_student['nume']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row_student['prenume']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row_student['email']) . "</td>";
+                  
+                  // Adaugă coloana pentru nota, presupunând că există o variabilă disponibilă sau o logica suplimentară pentru a determina nota
+                  if (isset($row_student['nota']) && !empty($row_student['nota'])) {
+                          echo "<td style='text-align:center;'>" . htmlspecialchars($row_student['nota']);
+                          echo "<form action='note_action.php' method='post'>";
+                          echo "<input type='hidden' name='id_student' value='" . $row_student['id_student'] . "'>";
+                          echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
+                          echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
+                          echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
+                          echo "<input type='text' name='nota' placeholder='Enter Grade'>";
+                          echo "<button type='submit' style='width: 95%;'>Grade</button>";
+                          echo "</form></td>";
+                  } else {
+                      if (!empty($row_student['id_user'])) {
+                          // Only show the grade form if the student is a registered user
+                          echo "<td style='text-align:center;'><form action='note_action.php' method='post'>";
+                          echo "<input type='hidden' name='id_student' value='" . $row_student['id_student'] . "'>";
+                          echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
+                          echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
+                          echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
+                          echo "<input type='text' name='nota' placeholder='Enter Grade'>";
+                          echo "<button type='submit' style='width: 95%;'>Grade</button>";
+                          echo "</form></td>";
+                      } else {
+                          // Display 'N/A' if the student is not a registered user
+                          echo "<td style='text-align:center;'>N/A</td>";
+                      }
+                  }
+                
+                  // Coloana pentru butoane
+                  echo "<td>";
+                  if (!empty($row_student['id_user'])) {
+                      // Dacă studentul este utilizator, arată butonul pentru arhive
+                      echo "<form action='vizualizeazaArhive_prof.php' method='post' style='margin-bottom: 10px;'>";
+                      echo "<input type='hidden' name='id_student' value='" . $row_student['id_student'] . "'>";
+                      echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
+                      echo "<button type='submit' style='width: 98%;'>Vezi Arhive</button>";
+                      echo "</form>";
+                  } else {
+                      // Dacă nu este utilizator, afișează un chenar gri
+                      echo "<span style='background-color: #ccc; padding: 5px; display: block; width: 100%; text-align: center;'>N/A</span>";
+                  }
+                  echo "</td>";
+                  echo "</tr>";
+              }
+              echo "</table>";
+
+
+
                 $stmt_students->close();
             } else {
                 echo "<p>Eroare la pregătirea interogării pentru studenți.</p>";

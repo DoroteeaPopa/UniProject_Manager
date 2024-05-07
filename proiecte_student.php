@@ -82,7 +82,20 @@ else if($specializare=='ISM'){
       CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
       WHERE (profesori.dep='0' OR profesori.dep='1') 
             AND orar.id_tip='4' 
-            AND (nivele_seri.nume_ns='331/1')
+            AND (nivele_seri.nume_ns='311/1' OR nivele_seri.nume_ns='321/1' OR nivele_seri.nume_ns='331/1' OR nivele_seri.nume_ns='341/1')
+      ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  
+  }
+  else if($specializare=='EA'){
+    $sql3 ="SELECT* 
+      FROM orar 
+      CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+      CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+      CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+      WHERE (profesori.dep='0' OR profesori.dep='1') 
+            AND orar.id_tip='4' 
+            AND (nivele_seri.nume_ns='312/1' OR nivele_seri.nume_ns='322/1' OR nivele_seri.nume_ns='332/1' OR nivele_seri.nume_ns='342/1')
       ORDER BY materi.id_an, nume";
     $result3 = $db->query($sql3);
   

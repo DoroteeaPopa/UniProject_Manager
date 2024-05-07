@@ -77,13 +77,27 @@ else if($specializare=='EM'){
     CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
     WHERE (profesori.dep='0' OR profesori.dep='1') 
           AND orar.id_tip='4' 
-          AND (nivele_seri.nume_ns='331/1')
+          AND (nivele_seri.nume_ns='311/1' OR nivele_seri.nume_ns='321/1' OR nivele_seri.nume_ns='331/1' OR nivele_seri.nume_ns='341/1')
+    ORDER BY materi.id_an, nume";
+  $result3 = $db->query($sql3);
+
+}
+else if($specializare=='EA'){
+  $sql3 ="SELECT* 
+    FROM orar 
+    CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+    CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+    CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+    WHERE (profesori.dep='0' OR profesori.dep='1') 
+          AND orar.id_tip='4' 
+          AND (nivele_seri.nume_ns='312/1' OR nivele_seri.nume_ns='322/1' OR nivele_seri.nume_ns='332/1' OR nivele_seri.nume_ns='342/1')
     ORDER BY materi.id_an, nume";
   $result3 = $db->query($sql3);
 
 }
 
-$db->close();
+
+
 ?>
 
 
@@ -128,7 +142,8 @@ thead {
     </thead>
       <tbody style="background-color:#add8e6; ">
       <?php mysqli_data_seek($result, 0); // repune cursorul la începutul rezultatelor ?>
-      <?php while( $developer = mysqli_fetch_assoc($result)) { ?>
+      <?php while( $developer = mysqli_fetch_assoc($result)) { 
+        $id_student=$developer['id_student']; ?>
         <tr id="<?php echo $developer['id_student']; ?>">   
           <td>Specializare</td>
           <td><?php echo $developer['denumire']; ?></td>
@@ -170,18 +185,35 @@ thead {
             <tbody style="background-color:#add8e6;">
                 <?php
                 while ($developer = mysqli_fetch_assoc($result3)) { 
-                    
-                ?>
-                    <tr id="<?php echo $developer['id_orar']; ?>">   
-                        <td><?php echo $developer['nume']; ?></td>
-                        <td><?php echo $developer['materie']; ?></td>
-                        <td><?php echo $developer['id_an']; ?></td>
-                        <td><?php echo $developer['sem']; ?></td>
-                        <td></td>
-                    </tr>
-                <?php 
+                  $id_materie=$developer['id_materie'];
+                  $sql_note = "SELECT nota FROM note WHERE id_student =$id_student AND id_materie =$id_materie";
+                  $stmt_note = $db->prepare($sql_note);
+                  
+                  // Check if the statement was prepared successfully
+                  if ($stmt_note) {
+                      $stmt_note->execute();
+                      $result_note = $stmt_note->get_result();
+
+                      // Fetch the result
+                      $nota = mysqli_fetch_assoc($result_note);
+                      $grade = $nota ? $nota['nota'] : 'N/A';  // Check if nota exists and set a default value if not
+
+                      ?>
+                      <tr id="<?php echo htmlspecialchars($developer['id_orar']); ?>">   
+                          <td><?php echo htmlspecialchars($developer['nume']); ?></td>
+                          <td><?php echo htmlspecialchars($developer['materie']); ?></td>
+                          <td><?php echo htmlspecialchars($developer['id_an']); ?></td>
+                          <td><?php echo htmlspecialchars($developer['sem']); ?></td>
+                          <td><?php echo htmlspecialchars($grade); ?></td>
+                      </tr>
+                      <?php 
+                      // Close the prepared statement
+                      $stmt_note->close();
+                  } else {
+                      echo "Failed to prepare the SQL statement.";
+                  } 
                     }
-                
+                    $db->close();
                 ?>
             </tbody>
         </table>

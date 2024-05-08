@@ -33,6 +33,54 @@
     border: 1px solid #ccc;
     border-radius: 8px;
   }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+  }
+
+  h2 {
+    color: #0D3165; /* Deep blue for headings */
+    border-bottom: 2px solid #f8f8f8; /* Subtle underline */
+    padding-bottom: 10px;
+  }
+
+  table {
+    width: 100%;
+    background-color: #ffffff;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    border: 1px solid #dee2e6; /* Bootstrap-like table borders */
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f8f8f8; /* Light grey background for headers */
+  }
+
+  td {
+    background-color: #FAFAFA; /* Very light grey background for cells */
+  }
+
+  .custom-file-upload {
+    background-color: #0D3165;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  input[type='text'], button {
+    border-radius: 5px;
+  }
+
+  form {
+    margin-top: 5px;
+  }
 </style>
 
 <?php
@@ -41,7 +89,7 @@ session_start();
 include("config.php");
 ?>
 
-<div style="padding:20px;">
+<div style="padding:20px;" class="container mt-5">
     <?php
     if (isset($_GET['id_materie']) && isset($_GET['id_profesor'])) {
         $id_materie = $_GET['id_materie'];
@@ -96,16 +144,21 @@ include("config.php");
 
             if ($details) {
                 // Display the details if available
-                echo "<h2>" . htmlspecialchars($details['materie']) . "</h2>";
-                echo "<p><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']) . "</p>";
-                echo "<p><strong>Semestru:</strong> " . htmlspecialchars($details['sem']) . "</p>";
-                echo "<p><strong>Semigrupa:</strong> " . htmlspecialchars($details['nume_ns']) . "</p>";
-                echo "<p><strong>Specializare:</strong> " . htmlspecialchars($specializare) . "</p>";
-                echo "<p><strong>Numar studenti:</strong> " . htmlspecialchars($numar_studenti) . "</p>";
+                echo "<div><h2>" . htmlspecialchars($details['materie']). "</h2><br>"; // Subject name as a main header-like element
+                 // Opening div for containing details
+                echo "<span style='margin-right: 16px;'><strong>Profesor:</strong> " . htmlspecialchars($details['nume']) . "</span>";
+                 // Adding <br> to ensure each detail starts on a new line
+                echo "<span style='margin-right: 16px;'><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']). "</span>" ;
+                echo "<span style='margin-right: 16px;'><strong>Semestru:</strong> " . htmlspecialchars($details['sem']). "</span>";
+                echo "<span style='margin-right: 16px;'><strong>Semigrupa:</strong> " . htmlspecialchars($details['nume_ns']). "</span>" ;
+                echo "<span style='margin-right: 16px;'><strong>Specializare:</strong> " . htmlspecialchars($specializare) . "</span>";
+                echo "<span style='margin-right: 16px;'><strong>Numar studenti:</strong> " . htmlspecialchars($numar_studenti);
+                echo "</div>"; // Closing div for details
+
 
 
                  // Interogare pentru a prelua cerințele
-              $sql_cerinte = "SELECT id_cerinte, cerinta FROM cerinte WHERE id_materie =$id_materie";
+              $sql_cerinte = "SELECT id_task, task FROM taskuri WHERE id_materie =$id_materie";
               $result_cerinte = $db->query($sql_cerinte); 
               echo "<table border='2' style='width:100%;'>";
               echo "<tr>";
@@ -114,17 +167,18 @@ include("config.php");
               echo "</tr>";
               while ($row = mysqli_fetch_assoc($result_cerinte)) {
                   echo "<tr>";
-                  echo "<td style='padding: 10px;'><input type='text' name='cerinta_noua' value='" . htmlspecialchars($row['cerinta'], ENT_QUOTES) . "' style='width:100%;'></td>";
                   echo "<td style='padding: 10px;'>";
                   echo "<form action='cerinteActions.php?action=edit' method='post' style='margin-bottom: 10px;'>";
-                  echo "<input type='hidden' name='id_cerinte' value='" . $row['id_cerinte'] . "'>";
+                  echo "<input type='text' name='task_nou' value='" . htmlspecialchars($row['task'], ENT_QUOTES) . "' style='width:100%;'>";
+                  echo "<td style='padding: 10px;'>";
+                  echo "<input type='hidden' name='id_task' value='" . $row['id_task'] . "'>";
                   echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
                   echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
                   echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
                   echo "<button type='submit' style='width: 100%;'>Editează</button>";
                   echo "</form> ";
                   echo "<form action='cerinteActions.php?action=delete' method='post'>";
-                  echo "<input type='hidden' name='id_cerinte' value='" . $row['id_cerinte'] . "'>";
+                  echo "<input type='hidden' name='id_task' value='" . $row['id_task'] . "'>";
                   echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
                   echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
                   echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
@@ -134,16 +188,17 @@ include("config.php");
                   echo "</tr>";
               }
                   echo "<tr>";
-                  echo "<td style='padding: 10px;'><input type='text' name='cerinta_noua' placeholder='Introdu o nouă cerință'></td>";
                   echo "<td style='padding: 10px;'>";
                   echo "<form action='cerinteActions.php?action=add' method='post'>";
+                  echo "<input type='text' name='task_nou' placeholder='Introdu o nouă cerință'>";
                   echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
                   echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
                   echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
-                  echo "<button type='submit'>Adaugă Cerință</button>";
+                  echo "<td><button type='submit'>Adaugă Cerință</button></td>";
                   echo "</form>";
                   echo "</td>";
                   echo "</tr>";
+              
               echo "</table>";
             
                   
@@ -182,7 +237,7 @@ include("config.php");
                   echo "<tr>";
                   echo "<td>" . htmlspecialchars($row_student['nume']) . "</td>";
                   echo "<td>" . htmlspecialchars($row_student['prenume']) . "</td>";
-                  echo "<td>" . htmlspecialchars($row_student['email']) . "</td>";
+                  echo "<td><a href='mailto:" . htmlspecialchars($row_student['email']) . "'>" . htmlspecialchars($row_student['email']) . "</a></td>";
                   
                   // Adaugă coloana pentru nota, presupunând că există o variabilă disponibilă sau o logica suplimentară pentru a determina nota
                   if (isset($row_student['nota']) && !empty($row_student['nota'])) {
@@ -192,8 +247,8 @@ include("config.php");
                           echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
                           echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
                           echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
-                          echo "<input type='text' name='nota' placeholder='Enter Grade'>";
-                          echo "<button type='submit' style='width: 95%;'>Grade</button>";
+                          echo "<input type='text' name='nota' placeholder='Introdu nota'>";
+                          echo "<button type='submit' style='width: 95%;'>Noteaza</button>";
                           echo "</form></td>";
                   } else {
                       if (!empty($row_student['id_user'])) {
@@ -203,8 +258,8 @@ include("config.php");
                           echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
                           echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
                           echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
-                          echo "<input type='text' name='nota' placeholder='Enter Grade'>";
-                          echo "<button type='submit' style='width: 95%;'>Grade</button>";
+                          echo "<input type='text' name='nota' placeholder='Introdu nota'>";
+                          echo "<button type='submit' style='width: 95%;'>Noteaza</button>";
                           echo "</form></td>";
                       } else {
                           // Display 'N/A' if the student is not a registered user

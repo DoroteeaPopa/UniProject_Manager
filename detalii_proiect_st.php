@@ -79,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['task'])) {
 
         $sql_cerinte = "SELECT * FROM cerinte WHERE id_materie =$id_materie AND id_student=$id_student"; 
         $result_cerinte = $db->query($sql_cerinte);   
+
         if ($stmt = $db->prepare($sql)) {
             $stmt->bind_param("i", $id_materie);
             $stmt->execute();
@@ -88,15 +89,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['task'])) {
 
             if ($details) {
                 // Display the details if available
-                echo "<h2>" . htmlspecialchars($details['materie']) . "</h2>";
-                echo "<p><strong>Profesor:</strong> " . htmlspecialchars($details['nume']) . "</p>";
-                echo "<p><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']) . "</p>";
-                echo "<p><strong>Semestru:</strong> " . htmlspecialchars($details['sem']) . "</p>";
+                // After fetching professor details
+                $id_profesor = $details['id_profesor'];
+                $sql_emailprof = "SELECT email FROM profesori_depcie WHERE id_profesor =$id_profesor";
+                if ($stmt_email = $db->prepare($sql_emailprof)) {
+                    $stmt_email->execute();
+                    $result_email = $stmt_email->get_result();
+                    $email_prof = $result_email->fetch_assoc();
+
+                    // Now display the details along with the email link
+                    echo "<h2>" . htmlspecialchars($details['materie']) . "</h2>";
+                    echo "<p><strong>Profesor:</strong> " . htmlspecialchars($details['nume']);
+                    echo "<p><strong>Email profesor:</strong> " ;
+                    if ($email_prof && !empty($email_prof['email'])) {
+                        echo " <a href='mailto:" . htmlspecialchars($email_prof['email']) . "'>" . htmlspecialchars($email_prof['email']) . "</a>";
+                    }
+                    echo "</p>";
+                    echo "<p><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']) . "</p>";
+                    echo "<p><strong>Semestru:</strong> " . htmlspecialchars($details['sem']) . "</p>";
+                    
+                    // Close statement
+                    $stmt_email->close();
+                } else {
+                    echo "Failed to prepare the SQL statement to fetch professor's email.";
+                }
              // Afișare cerințe cu checkbox
              echo "<form action='' method='post'>";
              while ($row = mysqli_fetch_assoc($result_cerinte)) {
                  $checked = $row['indeplinire'] == 1 ? 'checked' : '';
-                 echo "<div><input type='checkbox' name='task[]' value='" . $row['id_cerinte'] . "' $checked> " . htmlspecialchars($row['cerinta']) . "</div>";
+                 echo "<div><input type='checkbox' name='task[]' value='" . $row['id_cerinte'] . "' $checked> " . htmlspecialchars($row['id_task']) . "</div>";
              }
              echo "<button type='submit' name='updateTasks'>Actualizează Progres</button>";
              echo "</form>";

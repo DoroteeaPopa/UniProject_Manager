@@ -144,9 +144,9 @@ include("config.php");
 
             if ($details) {
                 // Display the details if available
-                echo "<div><h2>" . htmlspecialchars($details['materie']). "</h2><br>"; // Subject name as a main header-like element
+                echo "<div style='text-align: center;'><h2>" . htmlspecialchars($details['materie']). "</h2><br>"; // Subject name as a main header-like element
                  // Opening div for containing details
-                echo "<span style='margin-right: 16px;'><strong>Profesor:</strong> " . htmlspecialchars($details['nume']) . "</span>";
+                echo "<span style='margin-right: 16px;'><strong>Profesor:</strong> " . htmlspecialchars($details['nume']) . "</span><br>";
                  // Adding <br> to ensure each detail starts on a new line
                 echo "<span style='margin-right: 16px;'><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']). "</span>" ;
                 echo "<span style='margin-right: 16px;'><strong>Semestru:</strong> " . htmlspecialchars($details['sem']). "</span>";

@@ -94,7 +94,7 @@ function insertCeriteStudent($id_task_nou, $id_materie){
 }
 
 
-function stergeCeriteStudent($id_task){
+function deleteCeriteStudent($id_task){
     include("config.php");
     $sql = "DELETE FROM cerinte WHERE id_task = ?";
     if ($stmt = $db->prepare($sql)) {
@@ -103,6 +103,9 @@ function stergeCeriteStudent($id_task){
         $stmt->close();
     }
 }
+
+
+
 
 
 function addCerinta($id_materie, $task) {
@@ -138,7 +141,7 @@ function deleteCerinta($id_task) {
         $stmt->execute();
         $stmt->close();
     }
-    stergeCeriteStudent($id_task);
+    deleteCeriteStudent($id_task);
     $db->close();
 }
 

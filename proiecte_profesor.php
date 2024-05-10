@@ -44,6 +44,7 @@ $result2 = $db->query($sql2);
 
 $developer = mysqli_fetch_assoc($result);
 $nume_prof=$developer['nume'];
+$id_profesor_depcie=$developer['id_profesor_depcie'];
 
 
 
@@ -58,6 +59,11 @@ $nume_prof=$developer['nume'];
     ORDER BY nume_ns";
   $result3 = $db->query($sql3);
 
+
+  $sql4="SELECT * FROM locuri 
+    CROSS JOIN specializare ON specializare.id_specializare=locuri.id_specializare
+    WHERE id_profesor_depcie=$id_profesor_depcie";
+  $result4 = $db->query($sql4);
 $db->close();
 ?>
 
@@ -118,6 +124,22 @@ $db->close();
         <?php 
             
         } 
+        ?>
+
+        <?php
+        while ($developer = mysqli_fetch_assoc($result4)){?>
+          <div class="card licenta" id="<?php echo $developer['id_locuri']; ?>" onclick="window.location.href='detalii_licenta_prof.php?id_profesor_depcie=<?php echo $developer['id_profesor_depcie']; ?>&id_specializare=<?php echo $developer['id_specializare']; ?>'">
+            <h3>Licenta</h3>
+            <p><strong>Profesor:</strong> <?php echo $nume_prof; ?></p>
+            <p><strong>Specializare:</strong> <?php echo $developer['denumire']; ?></p>
+            <p><strong>Locuri disponibile:</strong> <?php echo $developer['locuri_disponibile']; ?></p>
+            <p><strong>Locuri ocupate:</strong> <?php echo $developer['locuri_ocupate']; ?></p>
+
+          </div>
+
+          <?php
+        }
+
         ?>
     </div>
 

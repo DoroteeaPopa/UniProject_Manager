@@ -196,6 +196,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
             }
             $stmt->close();
         }
+
+        $sql2 = "SELECT * FROM arhive WHERE id_student=$id_student AND id_materie=$id_materie ORDER BY data_incarcarii DESC";
+        $result2 = $db->query($sql2);
+
+        if ($result2) {
+            echo "<table class='table table-striped'>"; // Folosește clase Bootstrap pentru stilizare
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Data Încărcării</th>";
+            echo "<th>Arhivă</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            
+            $resultArray = $result2->fetch_all(MYSQLI_ASSOC); // Preia toate rândurile odată
+            $firstIndex = 0; // Indexul ultimului element
+        
+            foreach ($resultArray as $index => $row) {
+                if ($index === $firstIndex) {
+                    echo "<tr style='background-color: #e8f5e9;'>"; // Stil pentru ultimul rând
+                } else {
+                    echo "<tr>";
+                }
+                echo "<td>" . $row['data_incarcarii'] . "</td>";
+                echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
+                echo "<td><button onclick='viewFiles(\"" . htmlspecialchars($row['arhiva']) . "\")'>View Files</button></td>";
+                echo "</tr>";
+            }
+            
+            echo "</tbody>";
+            echo "</table>";
+        } else {
+            echo "Eroare la selectare: " . $db->error;
+        }
     } else {
         echo "<p>ID materie nepecificat.</p>";
     }

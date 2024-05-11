@@ -32,6 +32,7 @@ $result = $db->query($sql);
 
 $developer = mysqli_fetch_assoc($result);
 $specializare=$developer['denumire'];
+$id_specializare=$developer['id_specializare'];
 $id_student=$developer['id_student'];
 $an_curent=$developer['an'];
 
@@ -166,7 +167,7 @@ $db->close();
 
 
         if($an_curent=4){?>
-            <div class="card licenta" onclick="window.location.href='detalii_proiect_st.php?id_materie=<?php echo $developer['id_materie']; ?>&id_student=<?php echo $id_student; ?>'">
+            <div class="card licenta" onclick="window.location.href='delalii_licenta_st.php?id_specializare=<?php echo $id_specializare; ?>&id_student=<?php echo $id_student; ?>'">
                 <h3>Licenta</h3>
                 <p><strong>Data predarii:</strong></p>
                 <p><strong>Data prezentarii:</strong></p>

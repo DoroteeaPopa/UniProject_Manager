@@ -18,8 +18,10 @@ if (!(isset($_SESSION['login']))) {
     exit; // Adaugă exit pentru a opri executarea scriptului după redirecționare
 }
 
-$idStudent = $_POST['id_student'];
-$idMaterie = $_POST['id_materie'];
+$idStudent = $_POST['id_student']?? null;
+$idMaterie = $_POST['id_materie']?? null;
+$idTema = $_POST['id_tema']?? null;
+
 
 ?>
 
@@ -40,8 +42,14 @@ $idMaterie = $_POST['id_materie'];
 
 <?php
  include("config.php");
-            $sql2 = "SELECT * FROM arhive WHERE id_student=$idStudent AND id_materie=$idMaterie ORDER BY data_incarcarii DESC";
+            if($idTema != null){
+            $sql2 = "SELECT * FROM arhive WHERE id_student=$idStudent AND id_materie=$idTema AND licenta=1 ORDER BY data_incarcarii DESC";
             $result2 = $db->query($sql2);
+            }
+            else{
+            $sql2 = "SELECT * FROM arhive WHERE id_student=$idStudent AND id_materie=$idMaterie AND licenta=0 ORDER BY data_incarcarii DESC";
+            $result2 = $db->query($sql2);
+            }
 
             if ($result2) {
                 echo "<table class='table table-striped'>"; // Folosește clase Bootstrap pentru stilizare

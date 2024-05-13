@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
             $stmt->close();
         }
 
-        $sql2 = "SELECT * FROM arhive WHERE id_student=$id_student AND id_materie=$id_materie ORDER BY data_incarcarii DESC";
+        $sql2 = "SELECT * FROM arhive WHERE id_student=$id_student AND id_materie=$id_materie AND licenta=0 ORDER BY data_incarcarii DESC";
         $result2 = $db->query($sql2);
 
         if ($result2) {

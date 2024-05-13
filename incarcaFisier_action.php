@@ -18,8 +18,12 @@ if (!(isset($_SESSION['login']))) {
     exit; // Adaugă exit pentru a opri executarea scriptului după redirecționare
 }
 
-$idStudent = $_POST['id_student'];
-$idMaterie = $_POST['materie'];
+
+$idStudent = $_POST['id_student'] ?? null;
+$idTema = $_POST['id_tema'] ?? null;
+$idSpecializare = $_POST['id_specializare'] ?? null;
+$idMaterie = $_POST['materie'] ?? null;
+
 
 ?>
 
@@ -66,11 +70,20 @@ if ($_FILES['uploadedFile']['error'] === UPLOAD_ERR_OK) {
             include("config.php");
             date_default_timezone_set('Europe/Bucharest');
             $date = date('Y-m-d H:i:s');
-            $sql = "INSERT INTO arhive (id_student, id_materie, data_incarcarii, arhiva) VALUES ('$idStudent', '$idMaterie', '$date', '$dest_path')";
-            $result = $db->query($sql);
-            
-            header("Location: detalii_proiect_st.php?id_materie=$idMaterie&id_student=$idStudent"); // Redirect după operație
+            $sql = $db->prepare("INSERT INTO arhive (id_student, id_materie, data_incarcarii, arhiva, licenta) VALUES (?, ?, ?, ?, ?)");
+            $licentaFlag = ($idTema != null) ? 1 : 0;
+            $materieId = ($idTema != null) ? $idTema : $idMaterie;
+            $sql->bind_param("iissi", $idStudent, $materieId, $date, $dest_path, $licentaFlag);
+            $sql->execute();
+
+            if ($idTema != null) {
+                header("Location: delalii_licenta_st.php?id_specializare=$idSpecializare&id_student=$idStudent");
+            } else {
+                header("Location: detalii_proiect_st.php?id_materie=$idMaterie&id_student=$idStudent");
+            }
             exit;
+            
+
 
         } else {
             echo 'Eroare la mutarea fișierului în directorul destinat.';

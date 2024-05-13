@@ -120,11 +120,11 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
                 
                 }
 
-                while ($course = mysqli_fetch_assoc($result4)) {
+                while ($course = mysqli_fetch_assoc($result4)) {//pt fiecare materie
                     $id_materie = $course['id_materie'];
                     $sql_task="SELECT id_task FROM taskuri WHERE id_materie=$id_materie";
                     $result_task= $db->query($sql_task);
-                    while($task=mysqli_fetch_assoc($result_task)){
+                    while($task=mysqli_fetch_assoc($result_task)){//adauga fiecare task
                     $id_task = $task['id_task'];
                     // Insert a new entry into the `cerinte` table
                     $insert_cerinte_sql = "INSERT INTO cerinte (id_student, id_materie, id_task) VALUES ($id_student, $id_materie, $id_task)";

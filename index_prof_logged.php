@@ -93,9 +93,11 @@ thead {
       <tbody style="background-color:#add8e6; ">
       <?php mysqli_data_seek($result, 0); // repune cursorul la începutul rezultatelor ?>
       <?php while( $developer = mysqli_fetch_assoc($result)) { ?>
-        <tr id="<?php echo $developer['id_profesor_depcie']; ?>">   
+        <tr id="<?php echo $developer['id_profesor_depcie']; ?>"> 
             <td>Nume</td>
-            <td><?php echo $developer['nume']; ?></td>
+            <td><?php echo $developer['nume']; 
+               $id_profesor_depcie = $developer['id_profesor_depcie']; ;?>
+            </td>
         </tr>
         <tr>
             <td>Email</td>
@@ -104,7 +106,9 @@ thead {
         <tr>
             <td>Coordonator</td>
             <td>
-                <?php echo $developer['coordonator'] ? "da" : "nu"; ?>
+                <?php echo $developer['coordonator'] ? "da" : "nu";
+                $coordonator = $developer['coordonator'];
+                ?>
             </td>
         </tr>
 
@@ -114,7 +118,12 @@ thead {
 </div>
 
   <div style="float: right; width: 70%;">
-        <table class="table" style="width: 100%;">
+          <?php $developer = mysqli_fetch_assoc($result3);
+            if($developer != null){?>
+            <table class="table" style="width: 100%;">
+            <thead style="background-color:#0D3165; color: #ffffff;">
+              <th colspan="5" style="text-align:center;">Proiecte</th>
+            </thead>
             <thead style="background-color:#0D3165; color: #ffffff;">
               <th>Materie</th>
               <th>An</th>
@@ -124,7 +133,7 @@ thead {
             </thead>
             <tbody style="background-color:#add8e6;">
                 <?php
-                while ($developer = mysqli_fetch_assoc($result3)) {
+                do{
                   $semigrupa=$developer['nume_ns'];
                   $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa=$semigrupa";
                   $result4 = $db->query($sql_count);
@@ -142,11 +151,33 @@ thead {
                     </tr>
                     
                 <?php 
-                
-                    }
-                    $db->close();
-                
-                ?>
+                  } while($developer = mysqli_fetch_assoc($result3));
+            }
+            if($coordonator==1){
+              $sql_locuri = "SELECT locuri.id_specializare, specializare.denumire, locuri.locuri_disponibile, locuri.locuri_ocupate
+              FROM locuri 
+              JOIN specializare ON specializare.id_specializare = locuri.id_specializare
+              WHERE locuri.id_profesor_depcie = $id_profesor_depcie";
+              $result_locuri = $db->query($sql_locuri);
+
+                  echo "<table class='table' style='width: 100%;'>";
+                  echo "<thead style='background-color:#0D3165; color: #ffffff;'>";
+                  echo "<th colspan='3' style='text-align:center;'>Licenta</th>";
+                  echo "</thead><tbody style='background-color:#add8e6;'>";
+                  echo "<thead style='background-color:#0D3165; color: #ffffff;'>";
+                  echo "<th>Specializare</th><th>Locuri Disponibile</th><th>Locuri Ocupate</th>";
+                  echo "</thead><tbody style='background-color:#add8e6;'>";
+                  while ($row = mysqli_fetch_assoc($result_locuri)) {
+                      echo "<tr>";
+                      echo "<td>" . htmlspecialchars($row['denumire']) . "</td>";
+                      echo "<td>" . htmlspecialchars($row['locuri_disponibile']) . "</td>";
+                      echo "<td>" . htmlspecialchars($row['locuri_ocupate']) . "</td>";
+                      echo "</tr>";
+                  }
+                  echo "</tbody></table>";       
+            }
+            $db->close();
+            ?>                 
             </tbody>
         </table>
     </div>

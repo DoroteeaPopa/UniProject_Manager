@@ -14,7 +14,7 @@
 <body>
 
 <?php
-    $currentPage = 'proiecte_profesor';
+    $currentPage = 'detalii_proiect_prof';
     require_once "./header_prof_lgd.php"
 ?>
 
@@ -87,6 +87,34 @@
 // Start a session and include the database configuration
 session_start();
 include("config.php");
+$x = $_SESSION['email'];
+if (!(isset($_SESSION['login']))) {
+header ("Location: index.php");
+}
+//pt cazul de else(cand vrem sa vedem toate)
+$sql = "SELECT * FROM profesori_depcie CROSS JOIN profesori ON profesori_depcie.id_profesor=profesori.id_profesor WHERE profesori_depcie.email = '$x'";
+$result = $db->query($sql);
+
+
+$sql2 = "SELECT * FROM users WHERE users.email = '$x'";
+$result2 = $db->query($sql2);
+
+$developer = mysqli_fetch_assoc($result);
+$nume_prof=$developer['nume'];
+$id_profesor_depcie=$developer['id_profesor_depcie'];
+
+
+
+  $sql3 ="SELECT* 
+    FROM orar 
+    CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+    CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+    CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+    WHERE (profesori.dep='0' OR profesori.dep='1') 
+          AND orar.id_tip='4' 
+          AND profesori.nume='$nume_prof'
+    ORDER BY nume_ns";
+  $result3 = $db->query($sql3);
 ?>
 
 <div style="padding:20px;" class="container mt-5">
@@ -294,8 +322,47 @@ include("config.php");
 
         }
     } else {
-        echo "<p>ID materie nepecificat.</p>";
-    }
+      while ($row = mysqli_fetch_assoc($result3)) {
+          echo "<div style='margin-top: 20px; padding: 10px; background-color: #f8f8f8; text-align:center;'>";
+          echo "<h2>" . htmlspecialchars($row['materie']) . "</h2>";
+          echo "<div><strong>Profesor:</strong> " . htmlspecialchars($row['nume']) . "</div>";
+          echo "<div><strong>An de studiu:</strong> " . htmlspecialchars($row['id_an']) . "</div>";
+          echo "<div><strong>Semestru:</strong> " . htmlspecialchars($row['sem']) . "</div>";
+        $semigrupa = $row['nume_ns'];
+        $parti = explode('/', $semigrupa); 
+        $grupa = $parti[0];
+        if($grupa=="211" || $grupa=="212" || $grupa=="213" || 
+           $grupa=="221" || $grupa=="222" || $grupa=="223" ||
+           $grupa=="231" || $grupa=="232" ||
+           $grupa=="241" || $grupa=="242" )
+        {
+          $specializare="C";
+        }
+        else if($grupa=="214" || $grupa=="215" || $grupa=="224" || $grupa=="233" || $grupa=="243")
+        {
+          $specializare="TI";
+        }
+        else if($grupa=="216" || $grupa=="217" || $grupa=="225" || $grupa=="234" || $grupa=="244")
+        {
+          $specializare="ISM";
+        }
+        else if($grupa=="311" || $grupa=="321" || $grupa=="331" || $grupa=="341")
+        {
+          $specializare="EM";
+        }
+        else if($grupa=="312" || $grupa=="322" || $grupa=="332" || $grupa=="342")
+        {
+          $specializare="EA";
+        }
+        echo "<div><strong>Specializare:</strong> " . $specializare . "</div>";
+        echo "<div><strong>Semigrupa:</strong> " . $semigrupa . "</div>";
+
+      }
+          echo "</div>";
+      }
+  
+  
+  
 
     // Close the database connection
     $db->close();

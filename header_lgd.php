@@ -9,7 +9,7 @@
         
         <li class="<?php if($currentPage == 'index_lgd') { echo 'active'; } ?>"><a href="index_logged.php">Acasa</a></li>
         <li class="<?php if($currentPage =='proiecte_student'){echo 'active';}?>" ><a href="proiecte_student.php">Proiecte</a></li>
-        <li class="<?php if($currentPage =='contact_student'){echo 'active';}?>" ><a href="contact_student.php">Contact</a></li>
+        <li class="<?php if($currentPage =='detalii_proiect_st'){echo 'active';}?>" ><a href="detalii_proiect_st.php">Detalii proiecte</a></li>
         <li style="float:right">
             <form action="logout.php" method="post">
                  <button type="submit" style="width:auto;">Logout</button>

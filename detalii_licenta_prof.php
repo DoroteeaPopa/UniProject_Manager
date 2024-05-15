@@ -14,7 +14,7 @@
 <body>
 
 <?php
-    $currentPage = 'proiecte_profesor';
+    $currentPage = 'detalii_proiect_prof';
     require_once "./header_prof_lgd.php"
 ?>
 
@@ -146,6 +146,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['accepta'])) {
   header("Location: detalii_licenta_prof.php?id_profesor_depcie=$id_profesor_depcie&id_specializare=$id_specializare" );
 
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['refuza'])) {
+  $id_specializare = htmlspecialchars($_POST['id_specializare']);
+  $id_cerere=htmlspecialchars($_POST['id_cerere']);
+      $updateCereri = $db->prepare("UPDATE cereri_teme SET acceptat = 1 WHERE id_cerere = ?");
+      $updateCereri->bind_param("i", $id_cerere);
+      $updateCereri->execute();
+      $updateCereri->close();
+  
+  header("Location: detalii_licenta_prof.php?id_profesor_depcie=$id_profesor_depcie&id_specializare=$id_specializare" );
+
+}
+
 
 
 ?>

@@ -14,7 +14,7 @@
 <body>
 
 <?php
-    $currentPage = 'proiecte_student';
+    $currentPage = 'detalii_proiect_st';
     require_once "./header_lgd.php"
 ?>
 
@@ -161,6 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['sendRequest'])) {
                 echo "<tr>";
                 echo "<th>Data Încărcării</th>";
                 echo "<th>Arhivă</th>";
+                echo "<th>Descriere</th>";
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
@@ -177,7 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['sendRequest'])) {
                     }
                     echo "<td>" . $row['data_incarcarii'] . "</td>";
                     echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
-                    echo "<td><button onclick='viewFiles(\"" . htmlspecialchars($row['arhiva']) . "\")'>View Files</button></td>";
+                    echo "<td></td>";
                     echo "</tr>";
                 }
                 echo "<input type='hidden' name='id_student' value='" . htmlspecialchars($id_student) . "'>";

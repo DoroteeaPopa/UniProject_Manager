@@ -57,6 +57,7 @@ $idTema = $_POST['id_tema']?? null;
                 echo "<tr>";
                 echo "<th>Data Încărcării</th>";
                 echo "<th>Arhivă</th>";
+                echo "<th>Descriere</th>";
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
@@ -72,7 +73,7 @@ $idTema = $_POST['id_tema']?? null;
                     }
                     echo "<td>" . $row['data_incarcarii'] . "</td>";
                     echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
-                    echo "<td><button onclick='viewFiles(\"" . htmlspecialchars($row['arhiva']) . "\")'>View Files</button></td>";
+                    echo "<td></td>";//de adaugat!
                     echo "</tr>";
                 }
                 

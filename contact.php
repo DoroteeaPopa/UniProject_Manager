@@ -14,8 +14,7 @@
         $currentPage = 'contact';
         require_once "./header.php"
 ?>
-<h2 class="mesaj">PENTRU A NE PUTEA CONTACTA, VĂ RUGĂM SĂ VĂ LOGAȚI</h2>
-<h2 class="mesaj"> VĂ MULȚUMIM!</h2>
+
 
 
 </body>

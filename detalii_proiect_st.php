@@ -14,7 +14,7 @@
 <body>
 
 <?php
-    $currentPage = 'proiecte_student';
+    $currentPage = 'detalii_proiect_st';
     require_once "./header_lgd.php"
 ?>
 
@@ -66,9 +66,93 @@
         }
 
 </style>
+<?PHP
+session_start();
+include("config.php");
+$x = $_SESSION['email'];
+if (!(isset($_SESSION['login']))) {
+header ("Location: index.php");
+}
+//pt cazul de else la detalii proiect
+$sql = "SELECT * FROM student CROSS JOIN specializare ON student.specializare=specializare.id_specializare WHERE student.email = '$x'";
+$result = $db->query($sql);
+$developer = mysqli_fetch_assoc($result);
+$specializare=$developer['denumire'];
+$id_specializare=$developer['id_specializare'];
+$id_student=$developer['id_student'];
+$an_curent=$developer['an'];
+
+
+if($specializare=='Tehnologia Informatiei'){
+  $sql3 ="SELECT* 
+    FROM orar 
+    CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+    CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+    CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+    WHERE (profesori.dep='0' OR profesori.dep='1') 
+          AND orar.id_tip='4' 
+          AND (nivele_seri.nume_ns='214/1' OR nivele_seri.nume_ns='224/1' OR nivele_seri.nume_ns='233/1' OR nivele_seri.nume_ns='243/1')
+    ORDER BY materi.id_an, nume";
+  $result3 = $db->query($sql3);
+
+}
+else if($specializare=='ISM'){
+    $sql3 ="SELECT* 
+      FROM orar 
+      CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+      CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+      CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+      WHERE (profesori.dep='0' OR profesori.dep='1') 
+            AND orar.id_tip='4' 
+            AND (nivele_seri.nume_ns='216/1' OR nivele_seri.nume_ns='225/1' OR nivele_seri.nume_ns='234/1' OR nivele_seri.nume_ns='244/1')
+      ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  
+  }
+  else if($specializare=='C'){
+    $sql3 ="SELECT* 
+      FROM orar 
+      CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+      CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+      CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+      WHERE (profesori.dep='0' OR profesori.dep='1') 
+            AND orar.id_tip='4' 
+            AND (nivele_seri.nume_ns='211/1' OR nivele_seri.nume_ns='221/1' OR nivele_seri.nume_ns='231/1' OR nivele_seri.nume_ns='241/1')
+      ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  
+  }
+  else if($specializare=='EM'){
+    $sql3 ="SELECT* 
+      FROM orar 
+      CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+      CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+      CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+      WHERE (profesori.dep='0' OR profesori.dep='1') 
+            AND orar.id_tip='4' 
+            AND (nivele_seri.nume_ns='311/1' OR nivele_seri.nume_ns='321/1' OR nivele_seri.nume_ns='331/1' OR nivele_seri.nume_ns='341/1')
+      ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  
+  }
+  else if($specializare=='EA'){
+    $sql3 ="SELECT* 
+      FROM orar 
+      CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+      CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+      CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+      WHERE (profesori.dep='0' OR profesori.dep='1') 
+            AND orar.id_tip='4' 
+            AND (nivele_seri.nume_ns='312/1' OR nivele_seri.nume_ns='322/1' OR nivele_seri.nume_ns='332/1' OR nivele_seri.nume_ns='342/1')
+      ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  
+  }
+
+$db->close();?>
+
 
 <?php
-session_start();
 include("config.php");
 function fetchAllTaskIds() {
     global $db; 
@@ -114,7 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
 
 <div style="padding:20px;">
     <?php
-    if (isset($_GET['id_materie']) && isset($_GET['id_student'])) {
+    if (isset($_GET['id_materie']) && isset($_GET['id_student'])) {//daca am selectat un proiect
         $id_materie = $_GET['id_materie'];
         $id_student = $_GET['id_student'];
 
@@ -206,6 +290,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
             echo "<tr>";
             echo "<th>Data Încărcării</th>";
             echo "<th>Arhivă</th>";
+            echo "<th>Descriere</th>";
             echo "</tr>";
             echo "</thead>";
             echo "<tbody>";
@@ -221,7 +306,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
                 }
                 echo "<td>" . $row['data_incarcarii'] . "</td>";
                 echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
-                echo "<td><button onclick='viewFiles(\"" . htmlspecialchars($row['arhiva']) . "\")'>View Files</button></td>";
+                echo "<td></td>";// de adaugat!
                 echo "</tr>";
             }
             
@@ -230,8 +315,65 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
         } else {
             echo "Eroare la selectare: " . $db->error;
         }
-    } else {
-        echo "<p>ID materie nepecificat.</p>";
+    } else {// daca nu am selectat un proiect, le afiseaza cerintele la toate
+
+  
+
+        if ($result3 != null) {
+            while ($details= mysqli_fetch_assoc($result3)) {
+                echo "<div style='margin-bottom: 100px;'>";
+                $id_materie=$details['id_materie'];
+                $sql_cerinte = "SELECT * FROM cerinte 
+                CROSS JOIN taskuri ON cerinte.id_task = taskuri.id_task
+                WHERE cerinte.id_materie = $id_materie AND cerinte.id_student = 3";
+
+            
+                $result_cerinte = $db->query($sql_cerinte);
+
+                $id_profesor = $details['id_profesor'];
+                $sql_emailprof = "SELECT email FROM profesori_depcie WHERE id_profesor =$id_profesor";
+                if ($stmt_email = $db->prepare($sql_emailprof)) {
+                    $stmt_email->execute();
+                    $result_email = $stmt_email->get_result();
+                    $email_prof = $result_email->fetch_assoc();
+
+                    // Now display the details along with the email link
+                    echo "<div style='text-align: center;'><h2>" . htmlspecialchars($details['materie']). "</h2><br>";
+                    echo "<span style='margin-right: 16px;'><strong>Profesor:</strong> " . htmlspecialchars($details['nume']). "</span>";
+                    echo "<span style='margin-right: 16px;'><strong>Email profesor:</strong> " ;
+                    if ($email_prof && !empty($email_prof['email'])) {
+                        echo " <a href='mailto:" . htmlspecialchars($email_prof['email']) . "'>" . htmlspecialchars($email_prof['email']) . "</a>";
+                    }
+                    echo "</span>";
+                    echo "<span style='margin-right: 16px;'><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']) . "</span>";
+                    echo "<span style='margin-right: 16px;'><strong>Semestru:</strong> " . htmlspecialchars($details['sem']) . "</span></div><br>";
+                    
+                    // Close statement
+                    $stmt_email->close();
+                } else {
+                    echo "Failed to prepare the SQL statement to fetch professor's email.";
+                }?>
+                <div class="centered-container">
+                <h4 style="text-align: center;">Cerinte de proiect</h4>
+                <form action="" method="post">
+                    <?php
+                    while ($row = mysqli_fetch_assoc($result_cerinte)) {
+                        $checked = $row['indeplinire'] == 1 ? 'checked' : '';
+                        echo "<div class='form-check'>";
+                        echo "<input class='form-check-input' type='checkbox' name='task[" . $row['id_cerinte'] . "]' value='1' $checked>";
+                        echo "<label class='form-check-label'>" . htmlspecialchars($row['task']) . "</label>";
+                        echo "</div>";
+                    }
+                    ?>
+                    <button type="submit" name="updateTasks" class="btn btn-primary" style="width:21%">Actualizează Progres</button>
+                </form>
+        
+                </div>
+            <?php
+             echo "</div>";
+            }
+
+        }    
     }
 
     // Close the database connection

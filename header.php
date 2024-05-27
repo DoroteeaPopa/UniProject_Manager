@@ -50,7 +50,6 @@
           <option value="student">Student</option>
           <option value="prof">Profesor</option>
           <option value="prof_coord">Profesor Coordonator</option>
-          <option value="secretara">Secretară</option>
       </select>
         
       <button type="submit">Sign Up</button>

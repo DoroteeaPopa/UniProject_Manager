@@ -78,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch students and apply sorting if selected
-$sort_field = isset($_POST['sort']) ? $_POST['sort'] : 'id_student';
-$sql_students = "SELECT * FROM student ORDER BY $sort_field";
+$sort_field = isset($_POST['sort']) ? $_POST['sort'] : 'grupa';
+$sql_students = "SELECT * FROM student LEFT JOIN specializare ON specializare.id_specializare=student.specializare ORDER BY $sort_field";
 $result_students = $db->query($sql_students);
 
 // Fetch professors from departments 0 and 1
@@ -180,7 +180,7 @@ while ($row = $result_profesori_depcie->fetch_assoc()) {
           <td><?php echo $row['id_student']; ?></td>
           <td><input type="text" name="nume" value="<?php echo $row['nume']; ?>" class="form-control"></td>
           <td><input type="text" name="prenume" value="<?php echo $row['prenume']; ?>" class="form-control"></td>
-          <td><input type="text" name="specializare" value="<?php echo $row['specializare']; ?>" class="form-control"></td>
+          <td><input type="text" name="specializare" value="<?php echo $row['denumire']; ?>" class="form-control"></td>
           <td><input type="text" name="an" value="<?php echo $row['an']; ?>" class="form-control"></td>
           <td><input type="text" name="email" value="<?php echo $row['email']; ?>" class="form-control"></td>
           <td><input type="text" name="grupa" value="<?php echo $row['grupa']; ?>" class="form

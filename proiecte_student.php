@@ -35,6 +35,9 @@ $specializare=$developer['denumire'];
 $id_specializare=$developer['id_specializare'];
 $id_student=$developer['id_student'];
 $an_curent=$developer['an'];
+$data_prezentarii=$developer['data_prezentare_licenta'];
+$data_predarii=$developer['data_predare_licenta'];
+
 
 
 if($specializare=='Tehnologia Informatiei'){
@@ -169,11 +172,11 @@ $db->close();
         if($an_curent=4){?>
             <div class="card licenta" onclick="window.location.href='delalii_licenta_st.php?id_specializare=<?php echo $id_specializare; ?>&id_student=<?php echo $id_student; ?>'">
                 <h3>Licenta</h3>
-                <p><strong>Data predarii:</strong></p>
-                <p><strong>Data prezentarii:</strong></p>
+                <p><strong>Data predarii:<?php echo  $data_predarii?></strong></p>
+                <p><strong>Data prezentarii:<?php echo $data_prezentarii?></strong></p>
 
 
-
+               
             </div>
         <?php  
         }

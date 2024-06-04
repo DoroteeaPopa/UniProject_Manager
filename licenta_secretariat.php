@@ -7,11 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="header.css">
-
-
 </head>
-
-
 <body>
 
 <?php
@@ -20,9 +16,7 @@ $currentPage ='licenta_secretariat';
 
 <header>
   <nav>
-    
     <ul>
-        
         <li class="<?php if($currentPage == 'index_secretara_lgd') { echo 'active'; } ?>"><a href="index_secretara_logged.php">Acasa</a></li>
         <li class="<?php if($currentPage =='licenta_secretariat'){echo 'active';}?>" ><a href="licenta_secretariat.php">Licenta</a></li>
         <li style="float:right">
@@ -31,12 +25,10 @@ $currentPage ='licenta_secretariat';
             </form>
         </li>
     </ul>
-    
     <div class="header">
         <h1>UniProject Manager</h1>
         <img src="logoUlbs.jpg" alt="logo">
     </div>
-    
   </nav>
 </header>
 
@@ -95,6 +87,15 @@ $currentPage ='licenta_secretariat';
 session_start();
 include("config.php");
 
+// Handle form submission to edit specializations
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'edit_specializare') {
+    $id_specializare = $_POST['id_specializare'];
+    $data_prezentare_licenta = $_POST['data_prezentare_licenta'];
+    $sql_update_specializare = "UPDATE specializare SET data_prezentare_licenta = '$data_prezentare_licenta' WHERE id_specializare = $id_specializare";
+    $db->query($sql_update_specializare);
+}
+
+// Fetch accepted students and their project details
 $sql_accepted_students = "
     SELECT 
         student.nume AS student_nume, 
@@ -112,6 +113,10 @@ $sql_accepted_students = "
     WHERE cereri_teme.acceptat = 2
 ";
 $result_accepted_students = $db->query($sql_accepted_students);
+
+// Fetch specializations and their presentation dates
+$sql_specializari = "SELECT id_specializare, denumire, data_prezentare_licenta FROM specializare";
+$result_specializari = $db->query($sql_specializari);
 ?>
 
 <div class="container">
@@ -129,7 +134,7 @@ $result_accepted_students = $db->query($sql_accepted_students);
     <tbody>
       <?php while($row = $result_accepted_students->fetch_assoc()): ?>
       <tr>
-        <td><?php echo htmlspecialchars($row['student_nume'] . ' ' . htmlspecialchars($row['student_prenume'])); ?></td>
+        <td><?php echo htmlspecialchars($row['student_nume'] . ' ' . $row['student_prenume']); ?></td>
         <td><a href="mailto:<?php echo htmlspecialchars($row['student_email']); ?>"><?php echo htmlspecialchars($row['student_email']); ?></a></td>
         <td><?php echo htmlspecialchars($row['specializare_denumire']); ?></td>
         <td><?php echo htmlspecialchars($row['tema_licenta']); ?></td>
@@ -138,8 +143,35 @@ $result_accepted_students = $db->query($sql_accepted_students);
       <?php endwhile; ?>
     </tbody>
   </table>
-</div>
 
+  <h2>Specializari si Data Prezentare Licenta</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Specializare</th>
+        <th>Data Prezentare Licenta</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php while($row = $result_specializari->fetch_assoc()): ?>
+      <tr>
+        <form action="" method="post">
+          <td><?php echo htmlspecialchars($row['denumire']); ?></td>
+          <td><input type="text" name="data_prezentare_licenta" value="<?php echo htmlspecialchars($row['data_prezentare_licenta']); ?>" class="form-control"></td>
+          <td>
+            <input type="hidden" name="id_specializare" value="<?php echo $row['id_specializare']; ?>">
+            <input type="hidden" name="action" value="edit_specializare">
+            <button type="submit" class="btn btn-warning btn-edit">Editeaza</button>
+          </td>
+        </form>
+      </tr>
+      <?php endwhile; ?>
+    </tbody>
+  </table>
+</div>
 
 </body>
 </html>
+
+<?php $db->close(); ?>

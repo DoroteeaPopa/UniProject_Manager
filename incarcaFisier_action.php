@@ -23,6 +23,7 @@ $idStudent = $_POST['id_student'] ?? null;
 $idTema = $_POST['id_tema'] ?? null;
 $idSpecializare = $_POST['id_specializare'] ?? null;
 $idMaterie = $_POST['materie'] ?? null;
+$description = $_POST['description'];
 
 
 ?>
@@ -70,10 +71,10 @@ if ($_FILES['uploadedFile']['error'] === UPLOAD_ERR_OK) {
             include("config.php");
             date_default_timezone_set('Europe/Bucharest');
             $date = date('Y-m-d H:i:s');
-            $sql = $db->prepare("INSERT INTO arhive (id_student, id_materie, data_incarcarii, arhiva, licenta) VALUES (?, ?, ?, ?, ?)");
+            $sql = $db->prepare("INSERT INTO arhive (id_student, id_materie, data_incarcarii, arhiva, licenta, descriere) VALUES (?, ?, ?, ?, ?, ?)");
             $licentaFlag = ($idTema != null) ? 1 : 0;
             $materieId = ($idTema != null) ? $idTema : $idMaterie;
-            $sql->bind_param("iissi", $idStudent, $materieId, $date, $dest_path, $licentaFlag);
+            $sql->bind_param("iissis", $idStudent, $materieId, $date, $dest_path, $licentaFlag, $description);
             $sql->execute();
 
             if ($idTema != null) {

@@ -143,13 +143,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['sendRequest'])) {
                 echo "<br><span style='margin-right: 16px;'><strong>Email profesor:</strong> " ;
                 echo " <a href='mailto:" . htmlspecialchars($profesor['email']) . "'>" . htmlspecialchars($profesor['email']) . "</a>";
                 echo "<br><span style='margin-right: 16px;'><strong>Status:</strong> " . "Acceptata". "</span><br></br>" ;
-                echo "<form action='incarcaFisier_action.php' method='post' enctype='multipart/form-data'>";
-                echo "<input type='hidden' name='id_student' value='" . htmlspecialchars($id_student) . "'>";
+                echo '<form action="incarcaFisier_action.php" method="post" enctype="multipart/form-data">';
+                echo '<div class="form-group">';
+                echo '<label for="uploadedFile">Selectează fișier:</label>';
+                echo '<input type="file" class="form-control" id="uploadedFile" name="uploadedFile" required>';
+                echo '</div>';
+                echo '<div class="form-group">';
+                echo '<label for="description">Descriere:</label>';
+                echo '<input type="text" class="form-control" id="description" name="description" required>';
+                echo '</div>';
+                echo '<input type="hidden" name="id_student" value="' . htmlspecialchars($id_student) . '">';
                 echo "<input type='hidden' name='id_tema' value='" . htmlspecialchars($id_tema) . "'>";
                 echo "<input type='hidden' name='id_specializare' value='" . htmlspecialchars($id_specializare) . "'>";
-                echo "<input type='file' name='uploadedFile' accept='.zip,.rar,.7z' id='fileInput' style='display: none;' onchange='this.form.submit()'>";
-                echo "<label for='fileInput' class='custom-file-upload btn btn-custom-gray'>Selectează și încarcă fișierul</label>";
-                echo "</form>";
+                echo '<button type="submit" class="btn btn-primary">Încarcă Fișier</button>';
+                echo '</form>';
                 echo "</div>";
 
             $sql2 = "SELECT * FROM arhive WHERE id_student=$id_student AND id_materie=$id_tema AND licenta=1 ORDER BY data_incarcarii DESC";
@@ -178,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['sendRequest'])) {
                     }
                     echo "<td>" . $row['data_incarcarii'] . "</td>";
                     echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
-                    echo "<td></td>";
+                    echo "<td>" . $row['descriere'] . "</td>";;
                     echo "</tr>";
                 }
                 echo "<input type='hidden' name='id_student' value='" . htmlspecialchars($id_student) . "'>";

@@ -13,7 +13,6 @@
 </head>
 <?php
 include("config.php");
-//$sql = "SELECT * FROM carti CROSS JOIN gen ON carti.IdGen=gen.IdGen ORDER BY Titlu";
 $sql = "SELECT * FROM materi WHERE dep='1' OR dep='0'";
 $result = $db->query($sql);
 

@@ -111,6 +111,15 @@
   <div id="despre-noi" class="row">
     <div class="col-12">
       <h5>Despre Noi</h5>
+      <p>UniProject Manager este o platformă inovatoare creată în anul 2024 de Popa Doroteea Cristina, din cadrul Departamentului de Calculatoare și Inginerie Electrică, specializarea Tehnologia Informației. Scopul principal al acestei platforme este de a facilita gestionarea proiectelor academice atât pentru studenți, cât și pentru profesori, asigurând o experiență educațională optimizată și eficientă.</p>
+
+      <p>Motivația din spatele creării UniProject Manager a fost nevoia de a oferi studenților un instrument centralizat unde aceștia să poată urmări și gestiona progresul proiectelor lor academice. Studenții au acum posibilitatea de a vizualiza proiectele atribuite, cerințele specifice fiecărui proiect și de a actualiza progresul realizat. În plus, platforma le permite să încarce arhive cu proiectele lor și să adauge descrieri relevante pentru fiecare fișier încărcat. Astfel, studenții pot avea o viziune clară asupra tuturor sarcinilor și pot gestiona mai eficient timpul și resursele alocate fiecărui proiect.</p>
+
+      <p>Pe de altă parte, UniProject Manager oferă profesorilor un set de instrumente puternice pentru a monitoriza și evalua performanțele studenților. Profesorii pot vedea lista completă a studenților din fiecare semigrupă la care predau, pot urmări progresul individual al studenților și pot accesa arhivele încărcate de aceștia. În plus, platforma le permite să adauge cerințe de proiect detaliate și să evalueze proiectele studenților în mod transparent și organizat.</p>
+
+      <p>UniProject Manager vine cu o interfață intuitivă și prietenoasă, concepută pentru a simplifica toate aspectele gestionării proiectelor academice. Atât studenții, cât și profesorii beneficiază de o organizare clară a informațiilor, de instrumente eficiente de urmărire a progresului și de un sistem centralizat de comunicare și evaluare. Platforma contribuie la crearea unui mediu educațional colaborativ, în care fiecare participant își poate îndeplini sarcinile cu ușurință și poate atinge obiectivele academice propuse.</p>
+
+      <p>În concluzie, UniProject Manager este mai mult decât o simplă platformă de gestionare a proiectelor; este un partener educațional care își propune să sprijine atât studenții, cât și profesorii în procesul de învățare și predare. Cu ajutorul acestui instrument, procesul educațional devine mai organizat, mai transparent și mai eficient, asigurând astfel succesul academic al tuturor utilizatorilor săi.</p>
     </div>
   </div>
 </div>

@@ -4,9 +4,7 @@
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="header.css">
   <link rel="stylesheet" href="proiecte.css">
@@ -28,7 +26,7 @@ $sql2 = "SELECT*
       CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
       CROSS JOIN materi ON orar.id_materie=materi.id_materie 
       CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
-      WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' 
+      WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mACS'   
       ORDER BY materi.id_an, nume"; 
 $result2 = $db->query($sql2);
 $db->close();
@@ -45,8 +43,7 @@ $db->close();
     <?php
     $seen_materii = array();
     while ($developer = mysqli_fetch_assoc($result2)) { 
-        if (!in_array($developer['materie'], $seen_materii)) {
-            $seen_materii[] = $developer['materie'];
+
             $class = '';
             switch ($developer['id_an']) {
                 case 1:
@@ -71,9 +68,11 @@ $db->close();
             <p><strong>Profesor:</strong> <?php echo $developer['nume']; ?></p>
             <p><strong>An:</strong> <?php echo $developer['id_an']; ?></p>
             <p><strong>Semestru:</strong> <?php echo $developer['sem']; ?></p>
+            <p><strong>Semigr:</strong> <?php echo $developer['nume_ns']; ?></p>
+
         </div>
     <?php 
-        }
+
     } 
     ?>
 </div>
@@ -81,18 +80,17 @@ $db->close();
 <!-- Custom Info Modal -->
 <div id="id_popup" class="modal" style="text-align: center">
   <div class="modal-content animate">
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id_popup').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <br>
+    <div>
+      <p>Înregistrați-vă pentru a avea acces la informații despre acest proiect!</p>
     </div>
     <div>
-      <p>Inregistrati-va pentru a avea acces la informatii despre acest proiect!</p>
-    </div>
-    <div>
-      <button type="button" onclick="document.getElementById('id_popup').style.display='none'" class="cancelbtn">Inchide</button>
+      <button type="button" onclick="document.getElementById('id_popup').style.display='none'" class="cancelbtn">Închide</button>
     </div>
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function(){
     $(".card").click(function(){
@@ -104,8 +102,8 @@ $(document).ready(function(){
     });
 
     $(window).click(function(event) {
-        if (event.target == document.getElementById('id_popup')) {
-            document.getElementById('id_popup').style.display = "none";
+        if (event.target.id == 'id_popup') {
+            $("#id_popup").css("display", "none");
         }
     });
 });

@@ -116,6 +116,47 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
                   $result_materie = $db->query($sql3);
                 
                 }
+                else if($specializare=='mACS'){
+                  $sql3 = "SELECT* 
+                  FROM orar 
+                  CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+                  CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+                  CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+                  WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mACS'   
+                  ORDER BY materi.id_an, nume";
+                  $result_materie = $db->query($sql3);
+                }
+                else if($specializare=='mES'){
+                  $sql3 = "SELECT* 
+                  FROM orar 
+                  CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+                  CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+                  CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+                  WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mES'   
+                  ORDER BY materi.id_an, nume";
+                  $result_materie = $db->query($sql3);
+                }
+                else if($specializare=='mICAI'){
+                  $sql3 = "SELECT* 
+                  FROM orar 
+                  CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+                  CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+                  CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+                  WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND (nivele_seri.nume_ns='An_I_mICAI' OR nivele_seri.nume_ns='An_II_mICAI')
+                  ORDER BY materi.id_an, nume";
+                  $result_materie = $db->query($sql3);
+                }
+                else if($specializare=='mAAIE'){
+                  $sql3 = "SELECT* 
+                  FROM orar 
+                  CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+                  CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+                  CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+                  WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mAAIE'   
+                  ORDER BY materi.id_an, nume";
+                  $result_materie = $db->query($sql3);
+                }
+              
 
                 while ($course = mysqli_fetch_assoc($result_materie)) {//pt fiecare materie
                     $id_materie = $course['id_materie'];
@@ -123,7 +164,7 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
                     $result_task= $db->query($sql_task);
                     while($task=mysqli_fetch_assoc($result_task)){//adauga fiecare task
                     $id_task = $task['id_task'];
-                    // Insert a new entry into the `cerinte` table
+                    // Inserează în tabelul cerințe
                     $insert_cerinte_sql = "INSERT INTO cerinte (id_student, id_materie, id_task) VALUES ($id_student, $id_materie, $id_task)";
                     $db->query($insert_cerinte_sql);
                     }

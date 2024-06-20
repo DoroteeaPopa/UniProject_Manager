@@ -5,10 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="proiecte.css">
 
 </head>
 <body>
@@ -33,9 +29,7 @@
     border: 1px solid #ccc;
     border-radius: 8px;
   }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
-  }
+
 
   h2 {
     color: #0D3165; /* Deep blue for headings */
@@ -74,13 +68,7 @@
     display: inline-block;
   }
 
-  input[type='text'], button {
-    border-radius: 5px;
-  }
 
-  form {
-    margin-top: 5px;
-  }
 </style>
 
 <?php

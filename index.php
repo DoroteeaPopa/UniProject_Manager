@@ -4,7 +4,7 @@
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
     body {
@@ -55,7 +55,7 @@
 <div class="container">
   <div class="project-header">
     <h1>Accelerează-ți proiectele cu UniProject Manager</h1>
-    <p>Accelerează planificarea și execuția proiectelor cu UniProject Manager. Generează sub-sarcini automat pe baza descrierilor de sarcini, rezumă comentariile, scrie actualizări în mod autonom și multe altele cu managerul tău de proiect AI.</p>
+    <p>Accelerează planificarea și execuția proiectelor cu UniProject Manager. Simplifică gestionarea sarcinilor și îmbunătățește colaborarea student-profesor. Organizează toate aspectele unui proiect într-un singur loc. Beneficiază de o interfață intuitivă care facilitează urmărirea progresului și identificarea rapidă a problemelor, asigurând livrarea proiectelor la timp.</p>
   </div>
 
   <div class="description">

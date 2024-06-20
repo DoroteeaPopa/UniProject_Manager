@@ -27,7 +27,7 @@ if ($user) { // if user exists
         }
     }
     else{
-        header("Location: index.php?info=NOKK");
+        header("Location: index.php?info=NOK");
     }
 
 }

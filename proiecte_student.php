@@ -5,8 +5,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="proiecte.css">
 
@@ -105,6 +103,47 @@ else if($specializare=='ISM'){
     $result3 = $db->query($sql3);
   
   }
+  else if($specializare=='mACS'){
+    $sql3 = "SELECT* 
+    FROM orar 
+    CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+    CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+    CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+    WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mACS'   
+    ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  }
+  else if($specializare=='mES'){
+    $sql3 = "SELECT* 
+    FROM orar 
+    CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+    CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+    CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+    WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mES'   
+    ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  }
+  else if($specializare=='mICAI'){
+    $sql3 = "SELECT* 
+    FROM orar 
+    CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+    CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+    CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+    WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND (nivele_seri.nume_ns='An_I_mICAI' OR nivele_seri.nume_ns='An_II_mICAI')
+    ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  }
+  else if($specializare=='mAAIE'){
+    $sql3 = "SELECT* 
+    FROM orar 
+    CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+    CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+    CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+    WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mAAIE'   
+    ORDER BY materi.id_an, nume";
+    $result3 = $db->query($sql3);
+  }
+
 
 $db->close();
 ?>

@@ -31,7 +31,6 @@
             background-color: #ececec;
             border-radius: 8px;
             box-shadow: 0 6px 10px rgba(0,0,0,0.1);
-            text-align: center;
         }
 
         .custom-file-upload {
@@ -253,7 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
                     echo "Failed to prepare the SQL statement to fetch professor's email.";
                 }?>
             <div class="centered-container">
-                <h4 style="text-align: center;">Cerinte de proiect</h4>
+                <h4>Cerinte de proiect</h4>
                 <form action="" method="post">
                     <?php
                     while ($row = mysqli_fetch_assoc($result_cerinte)) {
@@ -264,23 +263,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
                         echo "</div>";
                     }
                     ?>
-                    <button type="submit" name="updateTasks" class="btn btn-primary" style="width:21%">Actualizează Progres</button>
+                    <button type="submit" name="updateTasks" class="btn btn-primary" style="width:21%; background-color: green;">Actualizează Progres</button>
                 </form>
-            
+            </div>
+            <br>
+            <div class="centered-container">
                 <form action="incarcaFisier_action.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="uploadedFile">Selectează fișier:</label>
+                        <h4 for="uploadedFile">Selectează fișier</h4>
                         <input type="file" class="form-control" id="uploadedFile" name="uploadedFile" required>
                     </div>
                     <div class="form-group">
-                        <label for="description">Descriere:</label>
+                        <h4 for="description">Adaugă descriere</h4>
                         <input type="text" class="form-control" id="description" name="description" required>
                     </div>
                     <input type="hidden" name="id_student" value="<?php echo htmlspecialchars($id_student); ?>">
                     <input type="hidden" name="materie" value="<?php echo htmlspecialchars($id_materie); ?>">
-                    <button type="submit" class="btn btn-primary">Încarcă Fișier</button>
+                    <button type="submit" class="btn btn-primary" style="width:21%; background-color: green;">Încarcă Fișier</button>
                 </form>
             </div>
+            <br><br>
             <?php
             }
             else {
@@ -314,7 +316,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
                 }
                 echo "<td>" . $row['data_incarcarii'] . "</td>";
                 echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
-                echo "<td>" . $row['descriere'] . "</td>";// de adaugat!
+                echo "<td>" . $row['descriere'] . "</td>";
                 echo "</tr>";
             }
             

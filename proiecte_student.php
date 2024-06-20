@@ -169,7 +169,7 @@ $db->close();
         } 
 
 
-        if($an_curent=4){?>
+        if($an_curent===4){?>
             <div class="card licenta" onclick="window.location.href='delalii_licenta_st.php?id_specializare=<?php echo $id_specializare; ?>&id_student=<?php echo $id_student; ?>'">
                 <h3>Licenta</h3>
                 <p><strong>Data predarii:<?php echo  $data_predarii?></strong></p>

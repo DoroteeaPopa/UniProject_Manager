@@ -18,9 +18,6 @@ switch ($statut) {
       $result2 = mysqli_query($db, $prof_check_query);
       $user_prof = mysqli_fetch_assoc($result2);
       break;
-  case 'secretara':
-      // Cod pentru înregistrare secretară
-      break;
   default:
       // Cod pentru manipulare caz neașteptat
       break;
@@ -35,11 +32,11 @@ $user = mysqli_fetch_assoc($result3);
 if ($user) 
 { // if user already exists
     if ($user['username'] === $username) {
-        header("Location: index.php?username=gresit");
+        header("Location: index.php?username=existent");
         exit();
     }
     if ($user['email'] === $email) {
-        header("Location: index.php?email=gresit");
+        header("Location: index.php?email=existent");
         exit();
     }
 } 
@@ -65,7 +62,7 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
                           AND orar.id_tip='4' 
                           AND (nivele_seri.nume_ns='214/1' OR nivele_seri.nume_ns='224/1' OR nivele_seri.nume_ns='233/1' OR nivele_seri.nume_ns='243/1')
                     ORDER BY materi.id_an, nume";
-                  $result4 = $db->query($sql3);
+                  $result_materie = $db->query($sql3);
                 
                 }
                 else if($specializare=='ISM'){
@@ -78,7 +75,7 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
                           AND orar.id_tip='4' 
                           AND (nivele_seri.nume_ns='216/1' OR nivele_seri.nume_ns='225/1' OR nivele_seri.nume_ns='234/1' OR nivele_seri.nume_ns='244/1')
                     ORDER BY materi.id_an, nume";
-                  $result4 = $db->query($sql3);
+                  $result_materie = $db->query($sql3);
                 
                 }
                 else if($specializare=='C'){
@@ -91,7 +88,7 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
                           AND orar.id_tip='4' 
                           AND (nivele_seri.nume_ns='211/1' OR nivele_seri.nume_ns='221/1' OR nivele_seri.nume_ns='231/1' OR nivele_seri.nume_ns='241/1')
                     ORDER BY materi.id_an, nume";
-                  $result4 = $db->query($sql3);  
+                  $result_materie = $db->query($sql3);  
                 }
                 else if($specializare=='EM'){
                   $sql3 ="SELECT* 
@@ -103,7 +100,7 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
                           AND orar.id_tip='4' 
                           AND (nivele_seri.nume_ns='311/1' OR nivele_seri.nume_ns='321/1' OR nivele_seri.nume_ns='331/1' OR nivele_seri.nume_ns='341/1')
                     ORDER BY materi.id_an, nume";
-                  $result4 = $db->query($sql3);
+                  $result_materie = $db->query($sql3);
                 
                 }
                 else if($specializare=='EA'){
@@ -116,11 +113,11 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
                           AND orar.id_tip='4' 
                           AND (nivele_seri.nume_ns='312/1' OR nivele_seri.nume_ns='322/1' OR nivele_seri.nume_ns='332/1' OR nivele_seri.nume_ns='342/1')
                     ORDER BY materi.id_an, nume";
-                  $result4 = $db->query($sql3);
+                  $result_materie = $db->query($sql3);
                 
                 }
 
-                while ($course = mysqli_fetch_assoc($result4)) {//pt fiecare materie
+                while ($course = mysqli_fetch_assoc($result_materie)) {//pt fiecare materie
                     $id_materie = $course['id_materie'];
                     $sql_task="SELECT id_task FROM taskuri WHERE id_materie=$id_materie";
                     $result_task= $db->query($sql_task);

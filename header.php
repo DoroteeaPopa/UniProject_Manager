@@ -21,7 +21,6 @@
 
     <div class="container" style="background-color:#f1f1f1">
       <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
     </div>
   </form>
 </div>
@@ -45,8 +44,8 @@
       <label for="password"><b>Parola</b></label>
       <input type="password" placeholder="Enter Password" name="password" required>
 
-      <label for="status">Statutul:</label>
-      <select name="status" id="status">
+      <label style="color: black;" for="status">Statutul:</label>
+      <select style="color: black;" name="status" id="status">
           <option value="student">Student</option>
           <option value="prof">Profesor</option>
           <option value="prof_coord">Profesor Coordonator</option>
@@ -58,7 +57,6 @@
 
     <div class="container" style="background-color:#f1f1f1">
       <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
     </div>
 
     <?php

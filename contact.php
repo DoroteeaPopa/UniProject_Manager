@@ -111,11 +111,6 @@
   <div id="despre-noi" class="row">
     <div class="col-12">
       <h5>Despre Noi</h5>
-      <p>Departamentul de Calculatoare şi Inginerie Electrică (DCIE) îsi are originile în Catedra de Electrotehnica si Calculatoare, înfiintata în anul 1990 pentru supervizarea specializarii Calculatoare (ingineri - studii de lunga durata, 5 ani), înfiintata în anul 1986.</p>
-      <p>În anul 1997, ca urmare a dezvoltarii, pe de o parte, si ca o necesitate de definire mai precisa a domeniilori de activitate (în continua extindere), pe de alta parte, Catedra de Electrotehnica si Calculatoare s-a separat în Catedra de Calculatoare si Automatizari si respectiv Catedra de Inginerie Electrica si Electronica, ambele fiintând sub aceasta denumire până în anul 2011.</p>
-      <p>În anul 2011 Catedra de Calculatoare si Automatizari si Catedra de Inginerie Electrica si Electronica se reunesc formând Departamentul de Calculatoare şi Inginere Electrică, care fiinţează sub această denumire si în prezent, în cadrul Facultatii de Inginerie a Universitatii “Lucian Blaga” din Sibiu.</p>
-      <p>Activitatea didactica a DCIE este sustinuta în prezent de 38 cadre didactice titulare (6 profesori, 12  conferentiari, 9 sefi lucrari, 9 asistenti, 2 preparatori) precum si de un numar de aproximativ 10 colaboratori externi, specialisti în domeniul stiintei calculatoarelor şi ingineriei electrice. Dintre membrii titulari unul detine conducere de doctorat în domeniul Ştiinţa Calculatoarelor, 29 deţin titlul ştiinţific de doctor iar 8 sunt doctoranzi în domeniul lor de specialitate.</p>
-      <p>Baza materială disponibilă atât pentru activităţile didactice cât si pentru cele de cercetare este compusa din 15 laboratoare dedicate instruirii studentilor în domeniile ingineriei sofware si hardware. Dotarea laboratoarelor, semnificativ îmbunatatita în ultimii ani, s-a realizat prin: programe TEMPUS finantate de catre Comunitatea Europeana, granturi de cercetare finantate de care Ministerul Educatiei si Cercetarii si prin finantare proprie.</p>
     </div>
   </div>
 </div>

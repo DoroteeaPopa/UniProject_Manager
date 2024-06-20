@@ -100,4 +100,15 @@ li a:hover:not(.active) {
   padding: 40px;;
 }
 
+/* Reseturi */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout principal */
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
 

@@ -26,7 +26,7 @@ $sql2 = "SELECT*
       CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
       CROSS JOIN materi ON orar.id_materie=materi.id_materie 
       CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
-      WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mACS'   
+      WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' 
       ORDER BY materi.id_an, nume"; 
 $result2 = $db->query($sql2);
 $db->close();
@@ -43,7 +43,8 @@ $db->close();
     <?php
     $seen_materii = array();
     while ($developer = mysqli_fetch_assoc($result2)) { 
-
+        if (!in_array($developer['materie'], $seen_materii)) {
+            $seen_materii[] = $developer['materie'];
             $class = '';
             switch ($developer['id_an']) {
                 case 1:
@@ -68,11 +69,9 @@ $db->close();
             <p><strong>Profesor:</strong> <?php echo $developer['nume']; ?></p>
             <p><strong>An:</strong> <?php echo $developer['id_an']; ?></p>
             <p><strong>Semestru:</strong> <?php echo $developer['sem']; ?></p>
-            <p><strong>Semigr:</strong> <?php echo $developer['nume_ns']; ?></p>
-
         </div>
     <?php 
-
+        }
     } 
     ?>
 </div>

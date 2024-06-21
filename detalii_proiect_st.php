@@ -4,7 +4,7 @@
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="proiecte.css">
 
@@ -63,6 +63,13 @@
         padding-bottom: 10px;
         }
 
+        .terminat{
+        background-color: blue;
+        }
+
+        .neterminat{
+        background-color: red;
+        }
 </style>
 <?PHP
 session_start();
@@ -222,12 +229,49 @@ function updateTasks($tasks, $all_task_ids) {
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
-    // Assuming you have a function to get all task IDs that could have been in the form
-    $all_task_ids = fetchAllTaskIds();  // You need to implement this function
-    updateTasks($_POST['task'] ?? [], $all_task_ids);
+function updateCompletionStatus($id_student, $id_materie, $terminat) {
+    global $db;
+
+    // Verificăm dacă există deja înregistrarea
+    $sql_check = "SELECT COUNT(*) AS count FROM note WHERE id_student = ? AND id_materie = ?";
+    if ($stmt_check = $db->prepare($sql_check)) {
+        $stmt_check->bind_param("ii", $id_student, $id_materie);
+        $stmt_check->execute();
+        $result_check = $stmt_check->get_result();
+        $row = $result_check->fetch_assoc();
+        $stmt_check->close();
+
+        if ($row['count'] == 0) {
+            // Dacă înregistrarea nu există, inserăm una nouă
+            $sql_insert = "INSERT INTO note (id_student, id_materie, terminat) VALUES (?, ?, ?)";
+            if ($stmt_insert = $db->prepare($sql_insert)) {
+                $stmt_insert->bind_param("iii", $id_student, $id_materie, $terminat);
+                $stmt_insert->execute();
+                $stmt_insert->close();
+            }
+        } else {
+            // Dacă înregistrarea există, o actualizăm
+            $sql_update = "UPDATE note SET terminat = ? WHERE id_student = ? AND id_materie = ?";
+            if ($stmt_update = $db->prepare($sql_update)) {
+                $stmt_update->bind_param("iii", $terminat, $id_student, $id_materie);
+                $stmt_update->execute();
+                $stmt_update->close();
+            }
+        }
+    }
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['updateTasks'])) {
+        $all_task_ids = fetchAllTaskIds();
+        updateTasks($_POST['task'] ?? [], $all_task_ids);
+    } elseif (isset($_POST['proj_terminat'])) {
+        $id_student = $_POST['id_student'];
+        $id_materie = $_POST['id_materie'];
+        $current_status = $_POST['current_status'];
+        updateCompletionStatus($id_student, $id_materie, $current_status);
+    }
+}
 
 ?>
 
@@ -254,6 +298,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
         CROSS JOIN taskuri ON cerinte.id_task = taskuri.id_task
         WHERE cerinte.id_materie = $id_materie AND cerinte.id_student = $id_student";
         $result_cerinte = $db->query($sql_cerinte);
+
+
+        $sql_terminat="SELECT * FROM note WHERE id_student=$id_student AND id_materie=$id_materie";
+        $result_terminat=$db->query($sql_terminat);
   
 
         if ($stmt = $db->prepare($sql)) {
@@ -302,6 +350,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTasks'])) {
                     }
                     ?>
                     <button type="submit" name="updateTasks" class="btn btn-primary" style="width:21%; background-color: green;">Actualizează Progres</button>
+                </form>
+                <form action="" method="post">
+                <?php
+                             $row = mysqli_fetch_assoc($result_terminat);
+                             if ($row && $row['terminat'] == 1) {
+                                 $terminat = 'Marchează ca neterminat';
+                                 $current_status = 0;
+                                 $color='neterminat';
+                             } else{
+                                 $terminat = 'Marchează ca terminat';
+                                 $current_status = 1;
+                                 $color='terminat';
+                             }
+                ?>
+                    <input type="hidden" name="id_student" value="<?php echo $id_student; ?>">
+                    <input type="hidden" name="id_materie" value="<?php echo $id_materie; ?>">
+                    <input type="hidden" name="current_status" value="<?php echo $current_status; ?>">
+                    <button type="submit" name="proj_terminat" class="btn btn-primary <?php echo $color;?>" style="width:21%;"><?php echo $terminat; ?></button>
                 </form>
             </div>
             <br>

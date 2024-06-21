@@ -14,8 +14,38 @@ header ("Location: index.php");
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
+  <style>
+.custom-table {
+    border-collapse: separate; /* Asigură că `border-radius` funcționează corect */
+    border-spacing: 0; /* Elimină spațiul între celule */
+    width: 100%; /* Lățimea tabelului */
+    border: 1px solid #ccc; /* Adaugă o bordură subtilă pentru a defini mai bine tabelul */
+    border-radius: 10px; /* Rotunjirea colțurilor tabelului */
+    overflow: hidden; /* Ascunde conținutul care depășește curba */
+}
+
+.custom-table th, .custom-table td {
+    border: 1px solid #ccc; /* Bordură pentru celule */
+    padding: 8px; /* Spațiu în interiorul celulelor */
+    text-align: left; /* Alinează textul la stânga */
+}
+
+.custom-table thead {
+    background-color: #0D3165 !important; /* Culoare de fundal pentru antetul tabelului */
+    color: #ffffff !important; /* Culoarea textului în antet */
+}
+
+.custom-table tbody {
+    background-color: #add8e6 !important; /* Culoare de fundal pentru corpul tabelului */
+}
+
+.table-spacing {
+        margin-bottom: 30px; /* Spatiu intre tabele */
+    }
+
+  </style>
 
 </head>
 
@@ -81,8 +111,8 @@ thead {
 </style>
 
 <div style="margin-top:30px; ">
-  <table class="table" style="width: 25%; float: left; ">
-    <thead style="background-color:#0D3165; color: #ffffff;  " >
+  <table class="custom-table" style="width: 25%; float: left; ">
+    <thead>
       <tr>
         <th>Username</th>
         <?php while( $developer = mysqli_fetch_assoc($result2)) { ?>
@@ -120,11 +150,11 @@ thead {
   <div style="float: right; width: 70%;">
           <?php $developer = mysqli_fetch_assoc($result3);
             if($developer != null){?>
-            <table class="table" style="width: 100%;">
-            <thead style="background-color:#0D3165; color: #ffffff;">
+            <table class="custom-table table-spacing" style="width: 100%;">
+            <thead>
               <th colspan="5" style="text-align:center;">Proiecte</th>
             </thead>
-            <thead style="background-color:#0D3165; color: #ffffff;">
+            <thead>
               <th>Materie</th>
               <th>An</th>
               <th>Semestru</th>
@@ -159,12 +189,11 @@ thead {
               JOIN specializare ON specializare.id_specializare = locuri.id_specializare
               WHERE locuri.id_profesor_depcie = $id_profesor_depcie";
               $result_locuri = $db->query($sql_locuri);
-
-                  echo "<table class='table' style='width: 100%;'>";
-                  echo "<thead style='background-color:#0D3165; color: #ffffff;'>";
+                  echo "<table class='custom-table' style='width: 100%;'>";
+                  echo "<thead>";
                   echo "<th colspan='3' style='text-align:center;'>Licenta</th>";
                   echo "</thead><tbody style='background-color:#add8e6;'>";
-                  echo "<thead style='background-color:#0D3165; color: #ffffff;'>";
+                  echo "<thead>";
                   echo "<th>Specializare</th><th>Locuri Disponibile</th><th>Locuri Ocupate</th>";
                   echo "</thead><tbody style='background-color:#add8e6;'>";
                   while ($row = mysqli_fetch_assoc($result_locuri)) {

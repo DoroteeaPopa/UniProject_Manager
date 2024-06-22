@@ -14,7 +14,7 @@
 session_start();
 $x = $_SESSION['email'];
 if (!(isset($_SESSION['login']))) {
-    header("Location: index_lgd.php");
+    header("Location: index.php");
     exit; // Adaugă exit pentru a opri executarea scriptului după redirecționare
 }
 
@@ -48,7 +48,7 @@ if($specializare=='Tehnologia Informatiei'){
           AND orar.id_tip='4' 
           AND (nivele_seri.nume_ns='214/1' OR nivele_seri.nume_ns='224/1' OR nivele_seri.nume_ns='233/1' OR nivele_seri.nume_ns='243/1')
     ORDER BY materi.id_an, nume";
-  $result3 = $db->query($sql3);
+  $result_materii = $db->query($sql3);
 
 }
 else if($specializare=='ISM'){
@@ -61,7 +61,7 @@ else if($specializare=='ISM'){
             AND orar.id_tip='4' 
             AND (nivele_seri.nume_ns='216/1' OR nivele_seri.nume_ns='225/1' OR nivele_seri.nume_ns='234/1' OR nivele_seri.nume_ns='244/1')
       ORDER BY materi.id_an, nume";
-    $result3 = $db->query($sql3);
+    $result_materii = $db->query($sql3);
   
   }
   else if($specializare=='C'){
@@ -74,7 +74,7 @@ else if($specializare=='ISM'){
             AND orar.id_tip='4' 
             AND (nivele_seri.nume_ns='211/1' OR nivele_seri.nume_ns='221/1' OR nivele_seri.nume_ns='231/1' OR nivele_seri.nume_ns='241/1')
       ORDER BY materi.id_an, nume";
-    $result3 = $db->query($sql3);
+    $result_materii = $db->query($sql3);
   
   }
   else if($specializare=='EM'){
@@ -87,7 +87,7 @@ else if($specializare=='ISM'){
             AND orar.id_tip='4' 
             AND (nivele_seri.nume_ns='311/1' OR nivele_seri.nume_ns='321/1' OR nivele_seri.nume_ns='331/1' OR nivele_seri.nume_ns='341/1')
       ORDER BY materi.id_an, nume";
-    $result3 = $db->query($sql3);
+    $result_materii = $db->query($sql3);
   
   }
   else if($specializare=='EA'){
@@ -100,7 +100,7 @@ else if($specializare=='ISM'){
             AND orar.id_tip='4' 
             AND (nivele_seri.nume_ns='312/1' OR nivele_seri.nume_ns='322/1' OR nivele_seri.nume_ns='332/1' OR nivele_seri.nume_ns='342/1')
       ORDER BY materi.id_an, nume";
-    $result3 = $db->query($sql3);
+    $result_materii = $db->query($sql3);
   
   }
   else if($specializare=='mACS'){
@@ -111,7 +111,7 @@ else if($specializare=='ISM'){
     CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
     WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mACS'   
     ORDER BY materi.id_an, nume";
-    $result3 = $db->query($sql3);
+    $result_materii = $db->query($sql3);
   }
   else if($specializare=='mES'){
     $sql3 = "SELECT* 
@@ -121,7 +121,7 @@ else if($specializare=='ISM'){
     CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
     WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mES'   
     ORDER BY materi.id_an, nume";
-    $result3 = $db->query($sql3);
+    $result_materii = $db->query($sql3);
   }
   else if($specializare=='mICAI'){
     $sql3 = "SELECT* 
@@ -131,7 +131,7 @@ else if($specializare=='ISM'){
     CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
     WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND (nivele_seri.nume_ns='An_I_mICAI' OR nivele_seri.nume_ns='An_II_mICAI')
     ORDER BY materi.id_an, nume";
-    $result3 = $db->query($sql3);
+    $result_materii = $db->query($sql3);
   }
   else if($specializare=='mAAIE'){
     $sql3 = "SELECT* 
@@ -141,7 +141,7 @@ else if($specializare=='ISM'){
     CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
     WHERE (profesori.dep='0' OR profesori.dep='1') AND orar.id_tip='4' AND nivele_seri.nume_ns='An_I_mAAIE'   
     ORDER BY materi.id_an, nume";
-    $result3 = $db->query($sql3);
+    $result_materii = $db->query($sql3);
   }
 
 
@@ -168,7 +168,7 @@ $db->close();
 <div class="container">
         <?php
         $seen_materii = array(); // Array pentru a ține evidența materiilor deja afișate
-        while ($developer = mysqli_fetch_assoc($result3)) { 
+        while ($developer = mysqli_fetch_assoc($result_materii)) { 
             // Verificăm dacă materia deja a fost afișată
             if (!in_array($developer['materie'], $seen_materii)) {
                 // Dacă nu a fost afișată, o adăugăm în array

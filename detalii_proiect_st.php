@@ -194,16 +194,13 @@ else if($specializare=='ISM'){
     $result3 = $db->query($sql3);
   }
 
-$db->close();?>
 
-
-<?php
 include("config.php");
-function fetchAllTaskIds() {
+function fetchAllTaskIds($id_student, $id_materie) {
     global $db; 
 
     $task_ids = [];
-    $sql = "SELECT id_cerinte FROM cerinte"; // Query to get all task IDs
+    $sql = "SELECT id_cerinte FROM cerinte WHERE id_student=$id_student AND id_materie=$id_materie"; // Query to get all task IDs
 
     if ($result = $db->query($sql)) {
         while ($row = $result->fetch_assoc()) {
@@ -262,12 +259,12 @@ function updateCompletionStatus($id_student, $id_materie, $terminat) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id_student = $_POST['id_student'];
+    $id_materie = $_POST['id_materie'];
     if (isset($_POST['updateTasks'])) {
-        $all_task_ids = fetchAllTaskIds();
+        $all_task_ids = fetchAllTaskIds($id_student, $id_materie);
         updateTasks($_POST['task'] ?? [], $all_task_ids);
     } elseif (isset($_POST['proj_terminat'])) {
-        $id_student = $_POST['id_student'];
-        $id_materie = $_POST['id_materie'];
         $current_status = $_POST['current_status'];
         updateCompletionStatus($id_student, $id_materie, $current_status);
     }
@@ -346,6 +343,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo "<div class='form-check'>";
                         echo "<input class='form-check-input' type='checkbox' name='task[" . $row['id_cerinte'] . "]' value='1' $checked>";
                         echo "<label class='form-check-label'>" . htmlspecialchars($row['task']) . "</label>";
+                        echo '<input type="hidden" name="id_student" value="' . htmlspecialchars($id_student) . '">';
+                        echo '<input type="hidden" name="id_materie" value="' . htmlspecialchars($id_materie) . '">';                        
                         echo "</div>";
                     }
                     ?>
@@ -479,7 +478,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo "</div>";
                     }
                     ?>
-                    <button type="submit" name="updateTasks" class="btn btn-primary" style="width:21%">Actualizează Progres</button>
+                    <button type="submit" name="updateTasks" class="btn btn-primary" style="width:21%; background-color: green;">Actualizează Progres</button>
                 </form>
         
                 </div>

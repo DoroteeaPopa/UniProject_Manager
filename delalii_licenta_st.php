@@ -4,9 +4,7 @@
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="proiecte.css">
 
@@ -64,6 +62,8 @@
         border-bottom: 2px solid #f8f8f8; /* Subtle underline */
         padding-bottom: 10px;
         }
+
+
 
 </style>
 
@@ -143,21 +143,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['sendRequest'])) {
                 echo "<br><span style='margin-right: 16px;'><strong>Email profesor:</strong> " ;
                 echo " <a href='mailto:" . htmlspecialchars($profesor['email']) . "'>" . htmlspecialchars($profesor['email']) . "</a>";
                 echo "<br><span style='margin-right: 16px;'><strong>Status:</strong> " . "Acceptata". "</span><br></br>" ;
-                echo '<form action="incarcaFisier_action.php" method="post" enctype="multipart/form-data">';
-                echo '<div class="form-group">';
-                echo '<label for="uploadedFile">Selectează fișier:</label>';
-                echo '<input type="file" class="form-control" id="uploadedFile" name="uploadedFile" required>';
-                echo '</div>';
-                echo '<div class="form-group">';
-                echo '<label for="description">Descriere:</label>';
-                echo '<input type="text" class="form-control" id="description" name="description" required>';
-                echo '</div>';
+                echo "</div>";
+
+                echo '<div class="centered-container">';
+                echo '    <form action="incarcaFisier_action.php" method="post" enctype="multipart/form-data">';
+                echo '        <div class="form-group">';
+                echo '            <h4 for="uploadedFile">Selectează fișier</h4>';
+                echo '            <input type="file" class="form-control" id="uploadedFile" name="uploadedFile" required>';
+                echo '        </div>';
+                echo '        <div class="form-group">';
+                echo '            <br><h4 for="description">Adaugă descriere</h4>';
+                echo '            <input type="text" class="form-control" id="description" name="description" required>';
+                echo '        </div>';
                 echo '<input type="hidden" name="id_student" value="' . htmlspecialchars($id_student) . '">';
                 echo "<input type='hidden' name='id_tema' value='" . htmlspecialchars($id_tema) . "'>";
                 echo "<input type='hidden' name='id_specializare' value='" . htmlspecialchars($id_specializare) . "'>";
-                echo '<button type="submit" class="btn btn-primary">Încarcă Fișier</button>';
-                echo '</form>';
-                echo "</div>";
+                echo '        <button type="submit" class="btn btn-primary" style="width:21%; background-color: green;">Încarcă Fișier</button>';
+                echo '    </form>';
+                echo '</div>';
+
+
 
             $sql2 = "SELECT * FROM arhive WHERE id_student=$id_student AND id_materie=$id_tema AND licenta=1 ORDER BY data_incarcarii DESC";
             $result2 = $db->query($sql2);

@@ -160,6 +160,9 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
 
                 while ($course = mysqli_fetch_assoc($result_materie)) {//pt fiecare materie
                     $id_materie = $course['id_materie'];
+                    $sql_nota="INSERT INTO note (id_student, id_materie, nota, terminat) VALUES ($id_student, $id_materie, 0, 0)";
+                    $db->query($sql_nota);
+
                     $sql_task="SELECT id_task FROM taskuri WHERE id_materie=$id_materie";
                     $result_task= $db->query($sql_task);
                     while($task=mysqli_fetch_assoc($result_task)){//adauga fiecare task

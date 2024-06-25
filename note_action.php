@@ -6,7 +6,7 @@ include("config.php");  // Make sure you include your database configuration fil
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nota'], $_POST['id_student'], $_POST['id_materie'])) {
     $id_student = $_POST['id_student'];
     $id_materie = $_POST['id_materie'];
-    $id_profesor = $_POST['id_profesor'];
+    $id_profesor = $_POST['id_profesor'] ?? null;
     $semigrupa = $_POST['semigrupa'];
     $nota = $_POST['nota'];
 
@@ -24,8 +24,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nota'], $_POST['id_stu
                 $update_stmt->bind_param("dii", $nota, $id_student, $id_materie);
                 $update_stmt->execute();
                 $update_stmt->close();
+                if($id_profesor){
                 header("Location: detalii_proiect_prof.php?id_materie=$id_materie&id_profesor=$id_profesor&semigrupa=$semigrupa"); // Redirect după operație
                 exit;
+                }
+                else{
+                header("Location: detalii_proiect_prof.php");                }
             } else {
                 echo "Error preparing update statement: " . $db->error;
             }

@@ -105,6 +105,36 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
   $result3 = $db->query($sql3);
 ?>
 
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $id_student = $_POST['id_student'];
+  $id_materie = $_POST['id_materie'];
+  if (isset($_POST['progres'])) {
+      // Fetch the progress for the selected student and subject
+      $sql_progres = "SELECT *
+                      FROM cerinte 
+                      LEFT JOIN taskuri ON cerinte.id_task = taskuri.id_task 
+                      WHERE cerinte.id_student = ? AND cerinte.id_materie = ?";
+      if ($stmt_progres = $db->prepare($sql_progres)) {
+          $stmt_progres->bind_param("ii", $id_student, $id_materie);
+          $stmt_progres->execute();
+          $result_progres = $stmt_progres->get_result();
+      }
+  }
+  else if(isset($_POST['arhive'])){
+    $sql_arhive = "SELECT * FROM arhive WHERE id_student = ? AND id_materie = ? AND licenta = 0 ORDER BY data_incarcarii DESC";
+    if ($stmt_arhive = $db->prepare($sql_arhive)) {
+        $stmt_arhive->bind_param("ii", $id_student, $id_materie);
+        $stmt_arhive->execute();
+        $result_arhive = $stmt_arhive->get_result();
+    }
+      
+  }
+}
+
+?>
+
 <div style="padding:20px;" class="container mt-5">
     <?php
     if (isset($_GET['id_materie']) && isset($_GET['id_profesor'])) {
@@ -201,6 +231,7 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
                   echo "<button type='submit' style='width: 100%;' onclick='return confirm(\"Ești sigur că vrei să ștergi această cerință?\");'>Șterge</button>";
                   echo "</form>";
                   echo "</td>";
+                  echo "</td>";
                   echo "</tr>";
               }
                   echo "<tr>";
@@ -229,7 +260,7 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
                         // Continuare cu studentii
             echo "<br>";
             echo "<b>Studenți din semigrupa " . htmlspecialchars($semigrupa) . "</b>";
-            $sql_students = "SELECT s.id_student, s.nume, s.prenume, s.email, u.id_user, n.nota
+            $sql_students = "SELECT s.id_student, s.nume, s.prenume, s.email, u.id_user, n.nota, n.terminat
                         FROM student s
                         LEFT JOIN users u ON s.email = u.email
                         LEFT JOIN note n ON s.id_student = n.id_student AND n.id_materie =$id_materie
@@ -243,9 +274,10 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
 
               echo "<table border='2' style='width: 100%;'>";
               echo "<tr>";
-              echo "<th style='width: 15%;'>Nume</th>";       // Set width to 15%
-              echo "<th style='width: 15%;'>Prenume</th>";    // Set width to 15%
+              echo "<th style='width: 10%;'>Nume</th>";       // Set width to 15%
+              echo "<th style='width: 10%;'>Prenume</th>";    // Set width to 15%
               echo "<th style='width: 20%;'>Email</th>";      // Set width to 20%
+              echo "<th style='width: 10%;'>Status</th>";       // Set width to 20%
               echo "<th style='width: 20%;'>Nota</th>";       // Set width to 20%
               echo "<th style='width: 30%;'>Acțiuni</th>";    // Width already set to 30%
               echo "</tr>";
@@ -254,6 +286,8 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
                   echo "<td>" . htmlspecialchars($row_student['nume']) . "</td>";
                   echo "<td>" . htmlspecialchars($row_student['prenume']) . "</td>";
                   echo "<td><a href='mailto:" . htmlspecialchars($row_student['email']) . "'>" . htmlspecialchars($row_student['email']) . "</a></td>";
+                  $status = htmlspecialchars($row_student['terminat']) == 1 ? 'terminat' : 'neterminat';
+                  echo "<td>" . $status . "</td>";
                   
                   // Adaugă coloana pentru nota, presupunând că există o variabilă disponibilă sau o logica suplimentară pentru a determina nota
                   if (isset($row_student['nota']) && !empty($row_student['nota'])) {
@@ -278,20 +312,27 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
                           echo "<button type='submit' style='width: 95%;'>Noteaza</button>";
                           echo "</form></td>";
                       } else {
+                          echo "<td></td>";
                           // Display 'N/A' if the student is not a registered user
                           echo "<td style='text-align:center;'>N/A</td>";
                       }
                   }
                 
                   // Coloana pentru butoane
-                  echo "<td>";
+                  echo "<td style='padding: 10px;'>";
                   if (!empty($row_student['id_user'])) {
                       // Dacă studentul este utilizator, arată butonul pentru arhive
-                      echo "<form action='vizualizeazaArhive_prof.php' method='post' style='margin-bottom: 10px;'>";
+                      echo "<form action='' method='post' style='margin-bottom: 10px;'>";
                       echo "<input type='hidden' name='id_student' value='" . $row_student['id_student'] . "'>";
                       echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
-                      echo "<button type='submit' style='width: 98%;'>Vezi Arhive</button>";
+                      echo "<button type='submit' name='arhive' style='width: 98%;'>Vezi Arhive</button>";
                       echo "</form>";
+                      echo "<form action='' method='post' style='margin-bottom: 10px;'>";
+                      echo "<input type='hidden' name='id_student' value='" . $row_student['id_student'] . "'>";
+                      echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
+                      echo "<button type='submit'name='progres' style='width: 98%;'>Vezi Progres</button>";
+                      echo "</form>";
+
                   } else {
                       // Dacă nu este utilizator, afișează un chenar gri
                       echo "<span style='background-color: #ccc; padding: 5px; display: block; width: 100%; text-align: center;'>N/A</span>";
@@ -301,7 +342,52 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
               }
               echo "</table>";
 
+              if (isset($result_progres)) {
+                echo "<br><b>Progres pentru studentul selectat:</b>";
+                echo "<table border='2' style='width: 100%;'>";
+                echo "<tr>";
+                echo "<th style='width: 70%;'>Cerință</th>";
+                echo "<th style='width: 30%;'>Indeplinire</th>";
+                echo "</tr>";
+                while ($row_progres = $result_progres->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row_progres['task']) . "</td>";
+                    $indeplinire = htmlspecialchars($row_progres['indeplinire']) == 1 ? 'Da' : 'Nu';
+                    echo "<td>" . $indeplinire . "</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+              }
 
+                if (isset($result_arhive)) {
+                  echo "<table class='table table-striped'>"; // Folosește clase Bootstrap pentru stilizare
+                  echo "<thead>";
+                  echo "<tr>";
+                  echo "<th>Data Încărcării</th>";
+                  echo "<th>Arhivă</th>";
+                  echo "<th>Descriere</th>";
+                  echo "</tr>";
+                  echo "</thead>";
+                  echo "<tbody>";
+                  
+                  $resultArray = $result_arhive->fetch_all(MYSQLI_ASSOC); // Preia toate rândurile odată
+                  $firstIndex = 0; 
+              
+                  foreach ($resultArray as $index => $row) {
+                      if ($index === $firstIndex) {
+                          echo "<tr style='background-color: #e8f5e9;'>"; // Stil pentru ultimul rând
+                      } else {
+                          echo "<tr>";
+                      }
+                      echo "<td>" . $row['data_incarcarii'] . "</td>";
+                      echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
+                      echo "<td></td>";//de adaugat!
+                      echo "</tr>";
+                  }
+                  
+                  echo "</tbody>";
+                  echo "</table>";
+                }
 
                 $stmt_students->close();
             } else {
@@ -310,44 +396,135 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
 
         }
     } else {
-      while ($row = mysqli_fetch_assoc($result3)) {
-          echo "<div style='margin-top: 20px; padding: 10px; background-color: #f8f8f8; text-align:center;'>";
-          echo "<h2>" . htmlspecialchars($row['materie']) . "</h2>";
-          echo "<div><strong>Profesor:</strong> " . htmlspecialchars($row['nume']) . "</div>";
-          echo "<div><strong>An de studiu:</strong> " . htmlspecialchars($row['id_an']) . "</div>";
-          echo "<div><strong>Semestru:</strong> " . htmlspecialchars($row['sem']) . "</div>";
-        $semigrupa = $row['nume_ns'];
-        $parti = explode('/', $semigrupa); 
-        $grupa = $parti[0];
-        if($grupa=="211" || $grupa=="212" || $grupa=="213" || 
-           $grupa=="221" || $grupa=="222" || $grupa=="223" ||
-           $grupa=="231" || $grupa=="232" ||
-           $grupa=="241" || $grupa=="242" )
-        {
-          $specializare="C";
-        }
-        else if($grupa=="214" || $grupa=="215" || $grupa=="224" || $grupa=="233" || $grupa=="243")
-        {
-          $specializare="TI";
-        }
-        else if($grupa=="216" || $grupa=="217" || $grupa=="225" || $grupa=="234" || $grupa=="244")
-        {
-          $specializare="ISM";
-        }
-        else if($grupa=="311" || $grupa=="321" || $grupa=="331" || $grupa=="341")
-        {
-          $specializare="EM";
-        }
-        else if($grupa=="312" || $grupa=="322" || $grupa=="332" || $grupa=="342")
-        {
-          $specializare="EA";
-        }
-        echo "<div><strong>Specializare:</strong> " . $specializare . "</div>";
-        echo "<div><strong>Semigrupa:</strong> " . $semigrupa . "</div>";
+      $sql4 = "SELECT DISTINCT materi.id_materie, materi.materie
+               FROM orar 
+               CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
+               CROSS JOIN materi ON orar.id_materie=materi.id_materie 
+               CROSS JOIN nivele_seri ON orar.id_nivel=nivele_seri.id_ns
+               WHERE (profesori.dep='0' OR profesori.dep='1') 
+                     AND orar.id_tip='4' 
+                     AND profesori.nume='$nume_prof'
+               ORDER BY nume_ns";
+      $result5 = $db->query($sql4);
+      
+      while ($row_materie = $result5->fetch_assoc()) {
+          $id_mat = $row_materie['id_materie'];
+          $nume_materie = htmlspecialchars($row_materie['materie']);
+          
+          $sql_restante = "SELECT s.id_student, s.nume, s.prenume, s.email, s.grupa, n.nota, n.terminat
+                           FROM note n 
+                           LEFT JOIN student s ON n.id_student = s.id_student
+                           WHERE n.id_materie = $id_mat AND ((n.nota < 5 AND n.nota > 0) OR n.nota = 0)";
+          $result_restante = $db->query($sql_restante);
+  
+          if ($result_restante->num_rows > 0) {
+              echo "<h3>Materie: $nume_materie</h3>";
+              echo "<table class='table table-striped'>";
+              echo "<thead>";
+              echo "<tr>";
+              echo "<th>Nume</th>";
+              echo "<th>Prenume</th>";
+              echo "<th>Email</th>";
+              echo "<th>Semigrupa</th>";
+              echo "<th>Nota</th>";
+              echo "<th>Terminat</th>";
+              echo "<th>Noteaza</th>";
+              echo "<th>Acțiuni</th>";
+              echo "</tr>";
+              echo "</thead>";
+              echo "<tbody>";
+              
+              while ($row_restante = $result_restante->fetch_assoc()) {
+                  echo "<tr>";
+                  echo "<td>" . htmlspecialchars($row_restante['nume']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row_restante['prenume']) . "</td>";
+                  echo "<td><a href='mailto:" . htmlspecialchars($row_restante['email']) . "'>" . htmlspecialchars($row_restante['email']) . "</a></td>";
+                  echo "<td>" . htmlspecialchars($row_restante['grupa']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row_restante['nota']) . "</td>";
+                  $terminat = htmlspecialchars($row_restante['terminat']) == 1 ? 'terminat' : 'neterminat';
+                  echo "<td>" . $terminat . "</td>";
+                  
+                  echo "<td>";
+                  echo "<form action='note_action.php' method='post'>";
+                  echo "<input type='hidden' name='id_student' value='" . $row_restante['id_student'] . "'>";
+                  echo "<input type='hidden' name='id_materie' value='" . $id_mat . "'>";
+                  echo "<input type='text' name='nota' placeholder='Introdu nota'>";
+                  echo "<button type='submit' style='width: 95%;'>Noteaza</button>";
+                  echo "</form>";
+                  echo "</td>";
+  
+                  echo "<td>";
+                  if (!empty($row_restante['email'])) {
+                      echo "<form action='' method='post' style='margin-bottom: 10px;'>";
+                      echo "<input type='hidden' name='id_student' value='" . $row_restante['id_student'] . "'>";
+                      echo "<input type='hidden' name='id_materie' value='" . $id_mat . "'>";
+                      echo "<button type='submit' name='arhive' style='width: 98%;'>Vezi Arhive</button>";
+                      echo "</form>";
+                      echo "<form action='' method='post' style='margin-bottom: 10px;'>";
+                      echo "<input type='hidden' name='id_student' value='" . $row_restante['id_student'] . "'>";
+                      echo "<input type='hidden' name='id_materie' value='" . $id_mat . "'>";
+                      echo "<button type='submit' name='progres' style='width: 98%;'>Vezi Progres</button>";
+                      echo "</form>";
+                  } else {
+                      echo "<span style='background-color: #ccc; padding: 5px; display: block; width: 100%; text-align: center;'>N/A</span>";
+                  }
+                  echo "</td>";
+  
+                  echo "</tr>";
+              }
+  
+              echo "</tbody>";
+              echo "</table>";
+          }
+      }
 
+      if (isset($result_progres)) {
+        echo "<br><b>Progres pentru studentul selectat:</b>";
+        echo "<table border='2' style='width: 100%;'>";
+        echo "<tr>";
+        echo "<th style='width: 70%;'>Cerință</th>";
+        echo "<th style='width: 30%;'>Indeplinire</th>";
+        echo "</tr>";
+        while ($row_progres = $result_progres->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row_progres['task']) . "</td>";
+            $indeplinire = htmlspecialchars($row_progres['indeplinire']) == 1 ? 'Da' : 'Nu';
+            echo "<td>" . $indeplinire . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
       }
-          echo "</div>";
-      }
+
+        if (isset($result_arhive)) {
+          echo "<table class='table table-striped'>"; // Folosește clase Bootstrap pentru stilizare
+          echo "<thead>";
+          echo "<tr>";
+          echo "<th>Data Încărcării</th>";
+          echo "<th>Arhivă</th>";
+          echo "<th>Descriere</th>";
+          echo "</tr>";
+          echo "</thead>";
+          echo "<tbody>";
+          
+          $resultArray = $result_arhive->fetch_all(MYSQLI_ASSOC); // Preia toate rândurile odată
+          $firstIndex = 0; 
+      
+          foreach ($resultArray as $index => $row) {
+              if ($index === $firstIndex) {
+                  echo "<tr style='background-color: #e8f5e9;'>"; // Stil pentru ultimul rând
+              } else {
+                  echo "<tr>";
+              }
+              echo "<td>" . $row['data_incarcarii'] . "</td>";
+              echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
+              echo "<td></td>";//de adaugat!
+              echo "</tr>";
+          }
+          
+          echo "</tbody>";
+          echo "</table>";
+        }
+  }
   
   
   

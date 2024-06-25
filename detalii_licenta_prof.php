@@ -4,9 +4,7 @@
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="proiecte.css">
 </head>
@@ -172,6 +170,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['refuza'])) {
 
   header("Location: detalii_licenta_prof.php?id_profesor_depcie=$id_profesor_depcie&id_specializare=$id_specializare" );
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['arhive'])) {
+  $id_student = $_POST['id_student'];
+  $idTema = $_POST['id_tema'];
+    $sql_arhive = "SELECT * FROM arhive WHERE id_student=? AND id_materie=? AND licenta=1 ORDER BY data_incarcarii DESC";
+    if ($stmt_arhive = $db->prepare($sql_arhive)) {
+        $stmt_arhive->bind_param("ii", $id_student, $idTema);
+        $stmt_arhive->execute();
+        $result_arhive = $stmt_arhive->get_result();
+    }
+      
+  }
 ?>
 
 <div style="padding:20px;" class="container mt-5">
@@ -294,15 +304,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['refuza'])) {
             }
             else{
               echo "Student inscris!"; 
-              echo "<form action='vizualizeazaArhive_prof.php' method='post' style='margin-bottom: 10px;'>";
+              echo "<form action='' method='post' style='margin-bottom: 10px;'>";
               echo "<input type='hidden' name='id_student' value='" . $cereri['id_student'] . "'>";
               echo "<input type='hidden' name='id_tema' value='" . $cereri['id_tema'] . "'>";
-              echo "<button type='submit' style='width: 98%;'>Vezi Arhive</button>";
+              echo "<button type='submit' name='arhive' style='width: 98%;'>Vezi Arhive</button>";
               echo "</form>";
             }
             echo "</td>";
             echo "</tr>";
-        }     
+
+            
+
+          }     
+
+          if (isset($result_arhive)) {
+            echo "<table class='table table-striped'>"; // Folosește clase Bootstrap pentru stilizare
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th>Data Încărcării</th>";
+            echo "<th>Arhivă</th>";
+            echo "<th>Descriere</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            
+            $resultArray = $result_arhive->fetch_all(MYSQLI_ASSOC); // Preia toate rândurile odată
+            $firstIndex = 0; 
+        
+            foreach ($resultArray as $index => $row) {
+                if ($index === $firstIndex) {
+                    echo "<tr style='background-color: #e8f5e9;'>"; // Stil pentru ultimul rând
+                } else {
+                    echo "<tr>";
+                }
+                echo "<td>" . $row['data_incarcarii'] . "</td>";
+                echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
+                echo "<td></td>";//de adaugat!
+                echo "</tr>";
+            }
+            
+            echo "</tbody>";
+            echo "</table>";
+          }
     }
 ?>    
 </div>

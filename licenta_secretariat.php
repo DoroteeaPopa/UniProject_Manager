@@ -4,7 +4,7 @@
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="header.css">
 </head>
@@ -33,10 +33,6 @@ $currentPage ='licenta_secretariat';
 </header>
 
 <style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-
   h2 {
     color: #0D3165;
     border-bottom: 2px solid #f8f8f8;
@@ -88,11 +84,22 @@ session_start();
 include("config.php");
 
 // Handle form submission to edit specializations
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'edit_specializare') {
-    $id_specializare = $_POST['id_specializare'];
-    $data_prezentare_licenta = $_POST['data_prezentare_licenta'];
-    $sql_update_specializare = "UPDATE specializare SET data_prezentare_licenta = '$data_prezentare_licenta' WHERE id_specializare = $id_specializare";
-    $db->query($sql_update_specializare);
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] == 'edit_specializare') {
+        $id_specializare = $_POST['id_specializare'];
+        $data_prezentare_licenta = $_POST['data_prezentare_licenta'];
+        $sql_update_specializare = "UPDATE specializare SET data_prezentare_licenta = '$data_prezentare_licenta' WHERE id_specializare = $id_specializare";
+        $db->query($sql_update_specializare);
+    } elseif ($_POST['action'] == 'delete_locuri') {
+        $id_locuri = $_POST['id_locuri'];
+        $sql_delete_locuri = "DELETE FROM locuri WHERE id_locuri = $id_locuri";
+        $db->query($sql_delete_locuri);
+    } elseif ($_POST['action'] == 'insert_prof') {
+      $id_profesor_depcie = $_POST['id_profesor_depcie'];
+      $id_specializare = $_POST['id_specializare'];
+      $sql= "INSERT INTO locuri (id_profesor_depcie, id_specializare, locuri_disponibile, locuri_ocupate) VALUES ($id_profesor_depcie,$id_specializare, 10, 0)";
+      $db->query($sql);
+  }
 }
 
 // Fetch accepted students and their project details
@@ -117,6 +124,19 @@ $result_accepted_students = $db->query($sql_accepted_students);
 // Fetch specializations and their presentation dates
 $sql_specializari = "SELECT id_specializare, denumire, data_prezentare_licenta FROM specializare";
 $result_specializari = $db->query($sql_specializari);
+
+$sql_locuri="SELECT locuri.id_locuri, profesori.nume, specializare.denumire 
+    FROM locuri 
+    JOIN specializare ON locuri.id_specializare = specializare.id_specializare
+    JOIN profesori_depcie ON locuri.id_profesor_depcie = profesori_depcie.id_profesor_depcie 
+    JOIN profesori ON profesori_depcie.id_profesor = profesori.id_profesor";
+$result_locuri = $db->query($sql_locuri);
+
+$sql_profesori="SELECT *
+    FROM profesori_depcie 
+    JOIN profesori ON profesori_depcie.id_profesor = profesori.id_profesor
+    WHERE coordonator=1";
+$result_profesori = $db->query($sql_profesori);
 ?>
 
 <div class="container">
@@ -163,6 +183,45 @@ $result_specializari = $db->query($sql_specializari);
             <input type="hidden" name="id_specializare" value="<?php echo $row['id_specializare']; ?>">
             <input type="hidden" name="action" value="edit_specializare">
             <button type="submit" class="btn btn-warning btn-edit">Editeaza</button>
+          </td>
+        </form>
+      </tr>
+      <?php endwhile; ?>
+    </tbody>
+  </table>
+
+  <h2>Profesori Coordonatori</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nume Profesor</th>
+        <th>Specializare</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php while($row = mysqli_fetch_assoc($result_locuri)): ?>
+      <tr>
+        <form action="" method="post">
+          <td><?php echo htmlspecialchars($row['nume']); ?></td>
+          <td><?php echo htmlspecialchars($row['denumire']); ?></td>
+          <td>
+            <input type="hidden" name="id_locuri" value="<?php echo $row['id_locuri']; ?>">
+            <input type="hidden" name="action" value="delete_locuri">
+            <button type="submit" class="btn btn-danger">Sterge</button>
+          </td>
+        </form>
+      </tr>
+      <?php endwhile; ?>
+      <?php while($row = mysqli_fetch_assoc($result_profesori)): ?>
+      <tr>
+        <form action="" method="post">
+          <td><?php echo htmlspecialchars($row['nume']); ?></td>
+          <td><input type="text" name="id_specializare" class="form-control"></td>
+          <td>
+            <input type="hidden" name="id_profesor_depcie" value="<?php echo htmlspecialchars($row['id_profesor_depcie'])?>">
+            <input type="hidden" name="action" value="insert_prof">
+            <button type="submit" class="btn btn-danger" style="background-color:blue;">Inserează</button>
           </td>
         </form>
       </tr>

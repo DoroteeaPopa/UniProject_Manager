@@ -79,15 +79,11 @@ $x = $_SESSION['email'];
 if (!(isset($_SESSION['login']))) {
 header ("Location: index.php");
 }
-//pt cazul de else(cand vrem sa vedem toate)
 $sql = "SELECT * FROM profesori_depcie CROSS JOIN profesori ON profesori_depcie.id_profesor=profesori.id_profesor WHERE profesori_depcie.email = '$x'";
-$result = $db->query($sql);
+$result_profesori = $db->query($sql);
 
 
-$sql2 = "SELECT * FROM users WHERE users.email = '$x'";
-$result2 = $db->query($sql2);
-
-$developer = mysqli_fetch_assoc($result);
+$developer = mysqli_fetch_assoc($result_profesori);
 $nume_prof=$developer['nume'];
 $id_profesor_depcie=$developer['id_profesor_depcie'];
 
@@ -137,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div style="padding:20px;" class="container mt-5">
     <?php
-    if (isset($_GET['id_materie']) && isset($_GET['id_profesor'])) {
+    if (isset($_GET['id_materie']) && isset($_GET['id_profesor'])) {//pagina e accesata prin click pe un card de materie
         $id_materie = $_GET['id_materie'];
         $id_profesor = $_GET['id_profesor'];
         $semigrupa = $_GET['semigrupa'];
@@ -184,8 +180,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt = $db->prepare($sql)) {
             $stmt->bind_param("i", $id_materie);
             $stmt->execute();
-            $result = $stmt->get_result();
-            $details = $result->fetch_assoc();
+            $result_profesori = $stmt->get_result();
+            $details = $result_profesori->fetch_assoc();
             
 
             if ($details) {
@@ -395,7 +391,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
         }
-    } else {
+    } else {//pagina e accesta prin click pe detalii proiect din meniu
       $sql4 = "SELECT DISTINCT materi.id_materie, materi.materie
                FROM orar 
                CROSS JOIN profesori ON orar.id_profesor=profesori.id_profesor 
@@ -406,7 +402,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                      AND profesori.nume='$nume_prof'
                ORDER BY nume_ns";
       $result5 = $db->query($sql4);
-      
+      echo "<h3 style='text-align: center;'>Studenți cu restanță sau fără notă</h3>";
       while ($row_materie = $result5->fetch_assoc()) {
           $id_mat = $row_materie['id_materie'];
           $nume_materie = htmlspecialchars($row_materie['materie']);

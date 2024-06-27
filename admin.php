@@ -16,25 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $sql = "UPDATE student SET nume='$nume', prenume='$prenume', specializare='$specializare', an=$an, email='$email', grupa='$grupa' WHERE id_student=$id_student";
             $db->query($sql);
-        } elseif ($_POST['action'] == 'insert_profesor') {
-            $id_profesor = $_POST['id_profesor'];
-            $email = $_POST['email'];
-            $coordonator = $_POST['coordonator'];
-
-            $sql = "INSERT INTO profesori_depcie (id_profesor, email, coordonator) VALUES ($id_profesor, '$email', '$coordonator')";
-            $db->query($sql);
-        } elseif ($_POST['action'] == 'edit_profesor') {
-            $id_profesor = $_POST['id_profesor'];
-            $email = $_POST['email'];
-            $coordonator = $_POST['coordonator'];
-
-            $sql = "UPDATE profesori_depcie SET email='$email', coordonator='$coordonator' WHERE id_profesor=$id_profesor";
-            $db->query($sql);
-        } elseif ($_POST['action'] == 'delete_profesor') {
-            $id_profesor = $_POST['id_profesor'];
-
-            $sql = "DELETE FROM profesori_depcie WHERE id_profesor=$id_profesor";
-            $db->query($sql);
         } elseif ($_POST['action'] == 'change_year') {
             $sql_students = "SELECT id_student, grupa FROM student";
             $result_students = $db->query($sql_students);
@@ -98,7 +79,7 @@ $secretary = $result_secretary->fetch_assoc();
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="header.css">
   <style>
@@ -126,6 +107,7 @@ $secretary = $result_secretary->fetch_assoc();
 <header>
   <nav>
     <ul>
+      <li class="active" ><a href="admin.php">Acasa</a></li>
       <li style="float:right">
         <form action="logout.php" method="post">
           <button type="submit" style="width:auto;">Logout</button>
@@ -140,7 +122,7 @@ $secretary = $result_secretary->fetch_assoc();
 </header>
 
 <div class="container">
-  <h2>Student List</h2>
+  <h2>Lista Studenți</h2>
   <form method="POST" action="" class="form-inline">
     <button type="submit" name="action" value="change_year" class="btn btn-primary btn-change-year">Schimba Anul</button>
   </form>
@@ -191,7 +173,7 @@ $secretary = $result_secretary->fetch_assoc();
       <?php endwhile; ?>
     </tbody>
   </table>
-  <h2>Secretary Details</h2>
+  <h2>Detalii Secretariat</h2>
   <form method="POST" action="">
     <table class="table table-striped">
       <thead>

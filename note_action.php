@@ -6,7 +6,7 @@ include("config.php");  // Make sure you include your database configuration fil
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nota'], $_POST['id_student'], $_POST['id_materie'])) {
     $id_student = $_POST['id_student'];
     $id_materie = $_POST['id_materie'];
-    $id_profesor = $_POST['id_profesor'] ?? null;
+    $id_profesor = $_POST['id_profesor'] ?? null;//verif pt redirectionare
     $semigrupa = $_POST['semigrupa'];
     $nota = $_POST['nota'];
 
@@ -29,7 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nota'], $_POST['id_stu
                 exit;
                 }
                 else{
-                header("Location: detalii_proiect_prof.php");                }
+                header("Location: detalii_proiect_prof.php");    
+                exit;
+                }
             } else {
                 echo "Error preparing update statement: " . $db->error;
             }
@@ -39,9 +41,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nota'], $_POST['id_stu
             if ($insert_stmt = $db->prepare($insert_sql)) {
                 $insert_stmt->bind_param("iid", $id_student, $id_materie, $nota);
                 $insert_stmt->execute();
+                if($id_profesor){
                 header("Location: detalii_proiect_prof.php?id_materie=$id_materie&id_profesor=$id_profesor&semigrupa=$semigrupa"); // Redirect după operație
                 exit;
+                }
+                else{
+                header("Location: detalii_proiect_prof.php");  
                 $insert_stmt->close();
+                exit;
+                }   
             } else {
                 echo "Error preparing insert statement: " . $db->error;
             }

@@ -29,9 +29,7 @@
     border: 1px solid #ccc;
     border-radius: 8px;
   }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
-  }
+
 
   h2 {
     color: #0D3165; /* Deep blue for headings */
@@ -186,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['arhive'])) {
 
 <div style="padding:20px;" class="container mt-5">
 <?php
-    if (isset($_GET['id_profesor_depcie']) && isset($_GET['id_specializare'])) {
+    if (isset($_GET['id_profesor_depcie']) && isset($_GET['id_specializare'])) {//pagina e accesata prin click pe un card de licenta
         while ($details = mysqli_fetch_assoc($result)){
                 $locuri_disponibile=$details['locuri_disponibile'];
                 echo "<div style='text-align: center;'><h2>Licenta</h2><br>"; // Subject name as a main header-like element

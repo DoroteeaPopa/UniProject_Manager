@@ -80,7 +80,7 @@ $nume_prof=$developer['nume'];
           AND orar.id_tip='4' 
           AND profesori.nume='$nume_prof'
     ORDER BY nume";
-  $result3 = $db->query($sql3);
+  $result_profesor = $db->query($sql3);
 
 
 
@@ -148,7 +148,7 @@ thead {
 </div>
 
   <div style="float: right; width: 70%;">
-          <?php $developer = mysqli_fetch_assoc($result3);
+          <?php $developer = mysqli_fetch_assoc($result_profesor);
             if($developer != null){?>
             <table class="custom-table table-spacing" style="width: 100%;">
             <thead>
@@ -181,7 +181,7 @@ thead {
                     </tr>
                     
                 <?php 
-                  } while($developer = mysqli_fetch_assoc($result3));
+                  } while($developer = mysqli_fetch_assoc($result_profesor));
             }
             if($coordonator==1){
               $sql_locuri = "SELECT locuri.id_specializare, specializare.denumire, locuri.locuri_disponibile, locuri.locuri_ocupate

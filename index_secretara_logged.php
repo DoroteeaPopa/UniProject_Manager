@@ -28,7 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db->query($sql);
         } elseif ($_POST['action'] == 'delete_student') {
             $id_student = $_POST['id_student'];
+            $sql_email="SELECT * FROM student WHERE id_student=$id_student LIMIT 1";
+            $result_email = $db->query($sql_email);
+            $email_var = mysqli_fetch_assoc($result_email);
+            $email=$email_var['email'];
+            $sql_users = "SELECT * FROM users WHERE users.email = '$email'";
+            $result_idUser = $db->query($sql_users);
+            $id_user_var = mysqli_fetch_assoc($result_idUser);
+            $id_user=$id_user_var['id_user'];
 
+            $sql2 = "DELETE FROM users WHERE id_user=$id_user";
+            $db->query($sql2);
+            
             $sql = "DELETE FROM student WHERE id_student=$id_student";
             $db->query($sql);
         } elseif ($_POST['action'] == 'insert_profesor') {
@@ -47,6 +58,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db->query($sql);
         } elseif ($_POST['action'] == 'delete_profesor') {
             $id_profesor = $_POST['id_profesor'];
+            $sql_email="SELECT * FROM profesori_depcie WHERE id_profesor=$id_profesor LIMIT 1";
+            $result_email = $db->query($sql_email);
+            $email_var = mysqli_fetch_assoc($result_email);
+            $email=$email_var['email'];
+            $sql_users = "SELECT * FROM users WHERE users.email = '$email'";
+            $result_idUser = $db->query($sql_users);
+            $id_user_var = mysqli_fetch_assoc($result_idUser);
+            $id_user=$id_user_var['id_user'];
+
+            $sql2 = "DELETE FROM users WHERE id_user=$id_user";
+            $db->query($sql2);
+
 
             $sql = "DELETE FROM profesori_depcie WHERE id_profesor=$id_profesor";
             $db->query($sql);
@@ -78,7 +101,7 @@ while ($row = $result_profesori_depcie->fetch_assoc()) {
   <title>UniProject Manager</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="header.css">
   <style>
@@ -121,7 +144,7 @@ while ($row = $result_profesori_depcie->fetch_assoc()) {
   </nav>
 </header>
 <div class="container">
-  <h2>Student List</h2>
+  <h2>Lista Studenților</h2>
   <form method="POST" action="" class="form-inline">
     <label for="sort">Sort by: </label>
     <select name="sort" id="sort" class="form-control form-control-inline">
@@ -193,7 +216,7 @@ while ($row = $result_profesori_depcie->fetch_assoc()) {
 </div>
 
 <div class="container">
-  <h2>Professors List</h2>
+  <h2>Lista Profesorilor</h2>
   <table class="table table-striped">
     <thead>
       <tr>

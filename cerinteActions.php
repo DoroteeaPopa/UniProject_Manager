@@ -83,7 +83,7 @@ function insertCeriteStudent($id_task_nou, $id_materie){
 
     while ($course = mysqli_fetch_assoc($result4)) {//pt fiecare materie
         $id_course = $course['id_materie'];
-        if($id_course==$id_materie){
+        if($id_course==$id_materie){//daca studentul are materias respectiva
             // Insert a new entry into the `cerinte` table
             $insert_cerinte_sql = "INSERT INTO cerinte (id_student, id_materie, id_task) VALUES ($id_student, $id_materie, $id_task_nou)";
             $db->query($insert_cerinte_sql);

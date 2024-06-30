@@ -11,14 +11,14 @@
 <body>
 
 <?php
-$currentPage ='licenta_secretariat';
+$currentPage = 'licenta_secretariat';
 ?>
 
 <header>
   <nav>
     <ul>
         <li class="<?php if($currentPage == 'index_secretara_lgd') { echo 'active'; } ?>"><a href="index_secretara_logged.php">Acasa</a></li>
-        <li class="<?php if($currentPage =='licenta_secretariat'){echo 'active';}?>" ><a href="licenta_secretariat.php">Licenta</a></li>
+        <li class="<?php if($currentPage == 'licenta_secretariat') { echo 'active'; } ?>"><a href="licenta_secretariat.php">Licenta</a></li>
         <li style="float:right">
             <form action="logout.php" method="post">
                  <button type="submit" style="width:auto;">Logout</button>
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     } elseif ($_POST['action'] == 'insert_prof') {
       $id_profesor_depcie = $_POST['id_profesor_depcie'];
       $id_specializare = $_POST['id_specializare'];
-      $sql= "INSERT INTO locuri (id_profesor_depcie, id_specializare, locuri_disponibile, locuri_ocupate) VALUES ($id_profesor_depcie,$id_specializare, 10, 0)";
+      $sql= "INSERT INTO locuri (id_profesor_depcie, id_specializare, locuri_disponibile, locuri_ocupate) VALUES ($id_profesor_depcie, $id_specializare, 10, 0)";
       $db->query($sql);
   }
 }
@@ -125,14 +125,15 @@ $result_accepted_students = $db->query($sql_accepted_students);
 $sql_specializari = "SELECT id_specializare, denumire, data_prezentare_licenta FROM specializare";
 $result_specializari = $db->query($sql_specializari);
 
-$sql_locuri="SELECT locuri.id_locuri, profesori.nume, specializare.denumire 
+$sql_locuri = "SELECT locuri.id_locuri, profesori.nume, specializare.denumire 
     FROM locuri 
     JOIN specializare ON locuri.id_specializare = specializare.id_specializare
     JOIN profesori_depcie ON locuri.id_profesor_depcie = profesori_depcie.id_profesor_depcie 
-    JOIN profesori ON profesori_depcie.id_profesor = profesori.id_profesor";
+    JOIN profesori ON profesori_depcie.id_profesor = profesori.id_profesor
+    ORDER BY profesori.nume";
 $result_locuri = $db->query($sql_locuri);
 
-$sql_profesori="SELECT *
+$sql_profesori = "SELECT * 
     FROM profesori_depcie 
     JOIN profesori ON profesori_depcie.id_profesor = profesori.id_profesor
     WHERE coordonator=1";
@@ -217,7 +218,15 @@ $result_profesori = $db->query($sql_profesori);
       <tr>
         <form action="" method="post">
           <td><?php echo htmlspecialchars($row['nume']); ?></td>
-          <td><input type="text" name="id_specializare" class="form-control"></td>
+          <td>
+            <select name="id_specializare" class="form-control">
+              <?php
+              $result_specializari->data_seek(0); // Reset the pointer to the beginning of the result set
+              while($specializare = $result_specializari->fetch_assoc()): ?>
+                <option value="<?php echo $specializare['id_specializare']; ?>"><?php echo htmlspecialchars($specializare['denumire']); ?></option>
+              <?php endwhile; ?>
+            </select>
+          </td>
           <td>
             <input type="hidden" name="id_profesor_depcie" value="<?php echo htmlspecialchars($row['id_profesor_depcie'])?>">
             <input type="hidden" name="action" value="insert_prof">

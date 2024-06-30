@@ -14,32 +14,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = $_POST['email'];
             $grupa = $_POST['grupa'];
 
-            $sql = "UPDATE student SET nume='$nume', prenume='$prenume', specializare='$specializare', an=$an, email='$email', grupa='$grupa' WHERE id_student=$id_student";
+            $sql_specializare="SELECT * FROM specializare WHERE denumire='$specializare'";
+            $result_specializare = $db->query($sql_specializare);
+            $id_specializare_var = mysqli_fetch_assoc($result_specializare);
+            $id_specializare = $id_specializare_var['id_specializare'];
+
+            $sql = "UPDATE student SET nume='$nume', prenume='$prenume', specializare='$id_specializare', an=$an, email='$email', grupa='$grupa' WHERE id_student=$id_student";
             $db->query($sql);
         } elseif ($_POST['action'] == 'change_year') {
-            $sql_students = "SELECT id_student, grupa FROM student";
-            $result_students = $db->query($sql_students);
-
-            while ($row = $result_students->fetch_assoc()) {
-                $id_student = $row['id_student'];
-                $grupa = $row['grupa'];
-
-                // Extract the numeric year from the grupa string (e.g., 211/1 -> 2)
-                preg_match('/(\d)(\d)(\d\/\d)/', $grupa, $matches);
-
-                if ($matches) {
-                    $year = (int)$matches[2]; // Get the second digit as the year
-                    if ($year < 4) {
-                        $year++;
-                        $new_grupa = $matches[1] . $year . $matches[3];
-
-                        // Update the grupa in the database
-                        $sql_update = "UPDATE student SET grupa='$new_grupa' WHERE id_student=$id_student";
-                        $db->query($sql_update);
-                    }
-                }
-            }
-        } elseif ($_POST['action'] == 'edit_secretary') {
+          $sql_students = "SELECT id_student, grupa, an FROM student";
+          $result_students = $db->query($sql_students);
+      
+          while ($row = $result_students->fetch_assoc()) {
+              $id_student = $row['id_student'];
+              $grupa = $row['grupa'];
+              $year=$row['an'];
+      
+              // Extract the numeric year from the grupa string and check the first character
+              $is_master = (substr($grupa, 0, 1) == 'm');
+      
+              if ($year) {      
+                  if ($is_master) {
+                      if ($year == 1) {
+                          $year = 2;
+                          $new_grupa = str_replace('_I_', '_II_', $new_grupa);
+                      }
+                      else{
+                        $new_grupa = "Absolvent master";
+                      }
+                  } else {
+                      preg_match('/(\d)(\d)(\d\/\d)/', $grupa, $matches);
+                      if ($year < 4) {
+                          $year++;
+                          $new_grupa = $matches[1] . $year . $matches[3];
+                      }
+                      else{
+                        $new_grupa = "Absolvent licenta";
+                      }
+                  }
+      
+                  // Update the grupa in the database
+                  if (isset($new_grupa)) {
+                      $sql_update = "UPDATE student SET grupa='$new_grupa', an='$year' WHERE id_student=$id_student";
+                      $db->query($sql_update);
+                  }
+              }
+          }
+      }
+       elseif ($_POST['action'] == 'edit_secretary') {
             $id_management = $_POST['id_management'];
             $nume = $_POST['nume'];
             $prenume = $_POST['prenume'];
@@ -55,17 +77,6 @@ $sort_field = isset($_POST['sort']) ? $_POST['sort'] : 'grupa';
 $sql_students = "SELECT * FROM student LEFT JOIN specializare ON specializare.id_specializare=student.specializare ORDER BY $sort_field";
 $result_students = $db->query($sql_students);
 
-// Fetch professors from departments 0 and 1
-$sql_profesori = "SELECT * FROM profesori WHERE dep IN (0, 1)";
-$result_profesori = $db->query($sql_profesori);
-
-// Fetch details from profesori_depcie
-$profesori_details = [];
-$sql_profesori_depcie = "SELECT * FROM profesori_depcie";
-$result_profesori_depcie = $db->query($sql_profesori_depcie);
-while ($row = $result_profesori_depcie->fetch_assoc()) {
-    $profesori_details[$row['id_profesor']] = $row;
-}
 
 // Fetch secretary details
 $sql_secretary = "SELECT * FROM management WHERE rol='secretara' LIMIT 1";

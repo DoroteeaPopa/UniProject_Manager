@@ -12,8 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $an = $_POST['an'];
             $email = $_POST['email'];
             $grupa = $_POST['grupa'];
+          
+            $sql_specializare="SELECT * FROM specializare WHERE denumire='$specializare'";
+            $result_specializare = $db->query($sql_specializare);
+            $id_specializare_var = mysqli_fetch_assoc($result_specializare);
+            $id_specializare = $id_specializare_var['id_specializare'];
 
-            $sql = "INSERT INTO student (nume, prenume, specializare, an, email, grupa) VALUES ('$nume', '$prenume', '$specializare', $an, '$email', '$grupa')";
+            $sql = "INSERT INTO student (nume, prenume, specializare, an, email, grupa) VALUES ('$nume', '$prenume', '$id_specializare', $an, '$email', '$grupa')";
             $db->query($sql);
         } elseif ($_POST['action'] == 'edit_student') {
             $id_student = $_POST['id_student'];
@@ -23,8 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $an = $_POST['an'];
             $email = $_POST['email'];
             $grupa = $_POST['grupa'];
+                  
+            $sql_specializare="SELECT * FROM specializare WHERE denumire='$specializare'";
+            $result_specializare = $db->query($sql_specializare);
+            $id_specializare_var = mysqli_fetch_assoc($result_specializare);
+            $id_specializare = $id_specializare_var['id_specializare'];
 
-            $sql = "UPDATE student SET nume='$nume', prenume='$prenume', specializare='$specializare', an=$an, email='$email', grupa='$grupa' WHERE id_student=$id_student";
+            $sql = "UPDATE student SET nume='$nume', prenume='$prenume', specializare='$id_specializare', an=$an, email='$email', grupa='$grupa' WHERE id_student=$id_student";
             $db->query($sql);
         } elseif ($_POST['action'] == 'delete_student') {
             $id_student = $_POST['id_student'];
@@ -79,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Fetch students and apply sorting if selected
 $sort_field = isset($_POST['sort']) ? $_POST['sort'] : 'id_student';
-$sql_students = "SELECT * FROM student ORDER BY $sort_field";
+$sql_students = "SELECT * FROM student CROSS JOIN specializare ON specializare.id_specializare=student.specializare ORDER BY $sort_field ";
 $result_students = $db->query($sql_students);
 
 // Fetch professors from departments 0 and 1
@@ -177,7 +187,7 @@ while ($row = $result_profesori_depcie->fetch_assoc()) {
           <td><?php echo $row['id_student']; ?></td>
           <td><input type="text" name="nume" value="<?php echo $row['nume']; ?>" class="form-control"></td>
           <td><input type="text" name="prenume" value="<?php echo $row['prenume']; ?>" class="form-control"></td>
-          <td><input type="text" name="specializare" value="<?php echo $row['specializare']; ?>" class="form-control"></td>
+          <td><input type="text" name="specializare" value="<?php echo $row['denumire']; ?>" class="form-control"></td>
           <td><input type="text" name="an" value="<?php echo $row['an']; ?>" class="form-control"></td>
           <td><input type="text" name="email" value="<?php echo $row['email']; ?>" class="form-control"></td>
           <td><input type="text" name="grupa" value="<?php echo $row['grupa']; ?>" class="form-control"></td>

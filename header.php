@@ -10,10 +10,10 @@
     </div>
 
     <div class="container">
-      <label for="email"><b>Email</b></label>
+      <label for="email" style="color:black;"><b>Email</b></label>
       <input type="text" placeholder="Enter Email" name="email" required>
 
-      <label for="password"><b>Parola</b></label>
+      <label for="password" style="color:black;"><b>Parola</b></label>
       <input type="password" placeholder="Enter Password" name="password" required>
         
       <button type="submit">Login</button>
@@ -35,13 +35,13 @@
     </div>
 
     <div class="container">
-      <label for="email">Email</label>
+      <label for="email" style="color:black; font-weight:bold;">Email</label>
       <input type="text" placeholder="Email" name="email" required><br>
 
-      <label for="uname"><b>Nume de utilizator</b></label>
+      <label for="uname" style="color:black;"><b>Nume de utilizator</b></label>
       <input type="text" placeholder="Enter Username" name="uname" required>
 
-      <label for="password"><b>Parola</b></label>
+      <label for="password" style="color:black;"><b>Parola</b></label>
       <input type="password" placeholder="Enter Password" name="password" required>
 
       <label style="color: black;" for="status">Statutul:</label>

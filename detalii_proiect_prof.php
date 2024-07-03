@@ -431,6 +431,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               echo "<tbody>";
               
               while ($row_restante = $result_restante->fetch_assoc()) {
+                if (!empty($row_restante['email'])) {
                   echo "<tr>";
                   echo "<td>" . htmlspecialchars($row_restante['nume']) . "</td>";
                   echo "<td>" . htmlspecialchars($row_restante['prenume']) . "</td>";
@@ -450,7 +451,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   echo "</td>";
   
                   echo "<td>";
-                  if (!empty($row_restante['email'])) {
+                  
                       echo "<form action='' method='post' style='margin-bottom: 10px;'>";
                       echo "<input type='hidden' name='id_student' value='" . $row_restante['id_student'] . "'>";
                       echo "<input type='hidden' name='id_materie' value='" . $id_mat . "'>";
@@ -461,12 +462,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       echo "<input type='hidden' name='id_materie' value='" . $id_mat . "'>";
                       echo "<button type='submit' name='progres' style='width: 98%;'>Vezi Progres</button>";
                       echo "</form>";
-                  } else {
-                      echo "<span style='background-color: #ccc; padding: 5px; display: block; width: 100%; text-align: center;'>N/A</span>";
-                  }
+                  
                   echo "</td>";
   
                   echo "</tr>";
+                }
               }
   
               echo "</tbody>";

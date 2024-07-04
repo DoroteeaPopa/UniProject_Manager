@@ -173,7 +173,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             AND orar.id_tip='4'
             AND materi.id_materie = ? ";
 
-        $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa =$semigrupa";
+                  if($semigrupa==='An_I_mICAI'){
+                  $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_I_sgr1'";
+                  $sem='mICAI_I_sgr1';
+                  }
+                  else if($semigrupa==='An_II_mICAI'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_II_sgr1'";
+                    $sem='mICAI_II_sgr1';
+                  }
+                  else if($semigrupa==='An_I_mACS'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_I_sgr1'";
+                    $sem='mACS_I_sgr1';
+                  }
+                  else if($semigrupa==='An_II_mACS'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_II_sgr1'";
+                    $sem='mACS_II_sgr1';
+                  }
+                  else if($semigrupa==='An_I_mES'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_I_sgr1'";
+                    $sem='mES_I_sgr1';
+                  }
+                  else if($semigrupa==='An_II_mES'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_II_sgr1'";
+                    $sem='mES_II_sgr1';
+                  }
+                  else if($semigrupa==='An_I_mAAIE'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_I_sgr1'";
+                    $sem='mAAIE_I_sgr1';
+                  }
+                  else if($semigrupa==='An_II_mAAIE'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_II_sgr1'";
+                    $sem='mAAIE_II_sgr1';
+                  }
+                  else{
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa=$semigrupa";
+                  }
+
         $result4 = $db->query($sql_count);
         $developer = mysqli_fetch_assoc($result4);
         $numar_studenti=$developer['numar_studenti'];  
@@ -260,7 +295,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         FROM student s
                         LEFT JOIN users u ON s.email = u.email
                         LEFT JOIN note n ON s.id_student = n.id_student AND n.id_materie =$id_materie
-                        WHERE s.grupa =$semigrupa";
+                        WHERE s.grupa ='$sem'";
 
               
             if ($stmt_students = $db->prepare($sql_students)) {
@@ -406,11 +441,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       while ($row_materie = $result5->fetch_assoc()) {
           $id_mat = $row_materie['id_materie'];
           $nume_materie = htmlspecialchars($row_materie['materie']);
+
+          $sql_an="SELECT id_an FROM materi WHERE id_materie=$id_mat LIMIT 1";
+          $result_an = $db->query($sql_an);
+          $var_an=$result_an->fetch_assoc();
+          $an=$var_an['id_an'];
           
-          $sql_restante = "SELECT s.id_student, s.nume, s.prenume, s.email, s.grupa, n.nota, n.terminat
+          $sql_restante = "SELECT s.id_student, s.nume, s.prenume, s.email, s.grupa, n.nota, n.terminat, s.an
                            FROM note n 
                            LEFT JOIN student s ON n.id_student = s.id_student
-                           WHERE n.id_materie = $id_mat AND ((n.nota < 5 AND n.nota > 0) OR n.nota = 0)";
+                           WHERE n.id_materie = $id_mat AND ((n.nota < 5 AND n.nota > 0) OR n.nota = 0) AND s.an>=$an
+                           ORDER BY s.grupa, s.nume";
           $result_restante = $db->query($sql_restante);
   
           if ($result_restante->num_rows > 0) {

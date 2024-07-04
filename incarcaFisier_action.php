@@ -14,7 +14,7 @@
 session_start();
 $x = $_SESSION['email'];
 if (!(isset($_SESSION['login']))) {
-    header("Location: index_lgd.php");
+    header("Location: index.php");
     exit; // Adaugă exit pentru a opri executarea scriptului după redirecționare
 }
 

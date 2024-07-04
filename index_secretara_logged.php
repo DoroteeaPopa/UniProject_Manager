@@ -156,11 +156,11 @@ while ($row = $result_profesori_depcie->fetch_assoc()) {
 <div class="container">
   <h2>Lista Studenților</h2>
   <form method="POST" action="" class="form-inline">
-    <label for="sort">Sort by: </label>
+    <label for="sort">Sortează în funcție de: </label>
     <select name="sort" id="sort" class="form-control form-control-inline">
       <option value="id_student" <?php if ($sort_field == 'id_student') echo 'selected'; ?>>ID</option>
       <option value="nume" <?php if ($sort_field == 'nume') echo 'selected'; ?>>Nume</option>
-      <option value="specializare" <?php if ($sort_field == 'specializare') echo 'selected'; ?>>Specializare</option>
+      <option value="denumire" <?php if ($sort_field == 'specializare') echo 'selected'; ?>>Specializare</option>
       <option value="an" <?php if ($sort_field == 'an') echo 'selected'; ?>>An</option>
       <option value="grupa" <?php if ($sort_field == 'grupa') echo 'selected'; ?>>Grupa</option>
     </select>

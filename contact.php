@@ -99,7 +99,7 @@
           <p class="card-text"><strong>Doroteea Cristina POPA</strong></p>
           <p class="card-text">Facultatea de Inginerie<br>Universitatea “Lucian Blaga” din Sibiu<br>Str. Emil Cioran 4 550025<br>Sibiu, ROMANIA</p>
           <p class="card-text"><strong>Telefon:</strong> 0269-216062</p>
-          <p class="card-text"><strong>Email:</strong> <a href="mailto:doroteeacristina.popa@ulbsibiu.ro">doroteeacristina.popa@ulbsibiu.ro</a></p>
+          <p class="card-text"><strong>Email:</strong> <a href="mailto:doroteea.popa@ulbsibiu.ro">doroteea.popa@ulbsibiu.ro</a></p>
           <div class="btn-container">
             <a href="http://csac.ulbsibiu.ro" target="_blank" class="btn btn-primary">Website</a>
             <button onclick="showDespreNoi()" class="btn btn-secondary">Despre Noi</button>

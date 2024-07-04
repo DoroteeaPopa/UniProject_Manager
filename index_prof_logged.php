@@ -165,7 +165,36 @@ thead {
                 <?php
                 do{
                   $semigrupa=$developer['nume_ns'];
-                  $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa=$semigrupa";
+                  if($semigrupa==='An_I_mICAI'){
+                  $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_I_sgr'";
+                  }
+                  else if($semigrupa==='An_II_mICAI'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_II_sgr'";
+                  }
+                  else if($semigrupa==='An_I_mACS'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_I_sgr'";
+                  }
+                  else if($semigrupa==='An_II_mACS'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_II_sgr'";
+                  }
+                  else if($semigrupa==='An_I_mES'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_I_sgr'";
+                  }
+                  else if($semigrupa==='An_II_mES'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_II_sgr'";
+                  }
+                  else if($semigrupa==='An_I_mAAIE'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_I_sgr'";
+                  }
+                  else if($semigrupa==='An_II_mAAIE'){
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_II_sgr'";
+                  }
+                  else{
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa=$semigrupa";
+                  }
+
+                  
+
                   $result4 = $db->query($sql_count);
                   $nrSudenti = mysqli_fetch_assoc($result4);
                   $numar_studenti=$nrSudenti['numar_studenti'];     

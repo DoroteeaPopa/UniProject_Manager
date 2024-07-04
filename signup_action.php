@@ -5,6 +5,8 @@ $username = mysqli_real_escape_string($db, $_POST['uname']);
 $email = mysqli_real_escape_string($db, $_POST['email']);
 $pass = mysqli_real_escape_string($db, $_POST['password']);
 $statut =  mysqli_real_escape_string($db,$_POST['status']);
+$user_prof=null;
+$user_student=null;
 
 switch ($statut) {
   case 'student':
@@ -13,8 +15,12 @@ switch ($statut) {
       $user_student = mysqli_fetch_assoc($result);
       break;
   case 'prof':
+      $prof_check_query = "SELECT * FROM profesori_depcie WHERE email='$email' AND coordonator=0 LIMIT 1";
+      $result2 = mysqli_query($db, $prof_check_query);
+      $user_prof = mysqli_fetch_assoc($result2);
+      break;
   case 'prof_coord':
-      $prof_check_query = "SELECT * FROM profesori_depcie WHERE email='$email' LIMIT 1";
+      $prof_check_query = "SELECT * FROM profesori_depcie WHERE email='$email' AND coordonator=1 LIMIT 1";
       $result2 = mysqli_query($db, $prof_check_query);
       $user_prof = mysqli_fetch_assoc($result2);
       break;
@@ -40,8 +46,8 @@ if ($user)
         exit();
     }
 } 
-else if($user_student || $user_prof) { // if user does not exist, insert new user, only if it s a student or a professor
-    $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
+else if($user_student!=null || $user_prof!=null) { // if user does not exist, insert new user, only if it s a student or a professor
+  $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
     if($statut=='student' && $user_student){
                 // Fetch the courses associated with the student's specialization and insert into `cerinte`
                 $sql = "SELECT * FROM student CROSS JOIN specializare ON student.specializare=specializare.id_specializare WHERE email='$email'";
@@ -188,24 +194,29 @@ else if($user_student || $user_prof) { // if user does not exist, insert new use
       $_SESSION['email'] = $email;
       if ($statut == 'student') {
 
-                //redirect the user to the logged-in page
+                  //redirect the user to the logged-in page
 
-                header("Location: index_logged.php");
-                exit();
+                  header("Location: index_logged.php");
+                  exit();
+      }
+      else if($statut=='prof' || $statut=='prof_coord' ){
+          header("Location: index_prof_logged.php");
+          exit();
+      }else {
+          header("Location: index.php?formular=NOK");
+          exit();
+      }
     }
-    else if($statut=='prof' || $statut=='prof_coord' ){
-        header("Location: index_prof_logged.php");
-        exit();
-    }else {
-        header("Location: index.php?formular=NOK");
-        exit();
+    else 
+    {
+      header("Location: index.php?formular=NOKK");
+      exit();
     }
 }
 else 
 {
-  header("Location: index.php?formular=NOKK");
-  exit();
-}
+    header("Location: index.php?formular=Statut_invalid");
+    exit();
 }
 $db->close();
 ?>

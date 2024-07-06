@@ -106,7 +106,7 @@ window.onclick = function(event) {
         <li style="float:right"><button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Sign Up</button></li>
 
     </ul>
-    <div class="header">
+    <div class="header" >
         <h1>UniProject Manager</h1>
         <img src="logoUlbs.jpg" alt="logo">
     </div>

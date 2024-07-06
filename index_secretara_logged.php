@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id_specializare_var = mysqli_fetch_assoc($result_specializare);
             $id_specializare = $id_specializare_var['id_specializare'];
 
-            $sql = "INSERT INTO student (nume, prenume, specializare, an, email, grupa) VALUES ('$nume', '$prenume', '$id_specializare', $an, '$email', '$grupa')";
+            $sql = "INSERT INTO student (nume, prenume, specializare, an, email, grupa) VALUES ('$nume', '$prenume', '$id_specializare', '$an', '$email', '$grupa')";
             $db->query($sql);
         } elseif ($_POST['action'] == 'edit_student') {
             $id_student = $_POST['id_student'];
@@ -57,14 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = $_POST['email'];
             $coordonator = $_POST['coordonator'];
 
-            $sql = "INSERT INTO profesori_depcie (id_profesor, email, coordonator) VALUES ($id_profesor, '$email', '$coordonator')";
+            $sql = "INSERT INTO profesori_depcie (id_profesor, email, coordonator) VALUES ('$id_profesor', '$email', '$coordonator')";
             $db->query($sql);
         } elseif ($_POST['action'] == 'edit_profesor') {
             $id_profesor = $_POST['id_profesor'];
             $email = $_POST['email'];
             $coordonator = $_POST['coordonator'];
 
-            $sql = "UPDATE profesori_depcie SET email='$email', coordonator='$coordonator' WHERE id_profesor=$id_profesor";
+            $sql = "UPDATE profesori_depcie SET email='$email', coordonator='$coordonator' WHERE id_profesor='$id_profesor'";
             $db->query($sql);
         } elseif ($_POST['action'] == 'delete_profesor') {
             $id_profesor = $_POST['id_profesor'];

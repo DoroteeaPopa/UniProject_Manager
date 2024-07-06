@@ -17,7 +17,7 @@
 
 <style>
   #archiveInput {
-    display: none;  /* Ascunde input-ul original */
+    display: none; 
   }
 
   .custom-file-upload {
@@ -25,15 +25,15 @@
     padding: 8px 16px;
     cursor: pointer;
     background-color: #f8f8f8;
-    color: #0D3165; /* Aplică stilul dorit aici */
+    color: #0D3165; 
     border: 1px solid #ccc;
     border-radius: 8px;
   }
 
 
   h2 {
-    color: #0D3165; /* Deep blue for headings */
-    border-bottom: 2px solid #f8f8f8; /* Subtle underline */
+    color: #0D3165; 
+    border-bottom: 2px solid #f8f8f8; 
     padding-bottom: 10px;
   }
 
@@ -45,17 +45,17 @@
   }
 
   th, td {
-    border: 1px solid #dee2e6; /* Bootstrap-like table borders */
+    border: 1px solid #dee2e6; 
     padding: 8px;
     text-align: left;
   }
 
   th {
-    background-color: #f8f8f8; /* Light grey background for headers */
+    background-color: #f8f8f8;
   }
 
   td {
-    background-color: #FAFAFA; /* Very light grey background for cells */
+    background-color: #FAFAFA; 
   }
 
   .custom-file-upload {
@@ -163,6 +163,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         {
           $specializare="EA";
         }
+        else{
+          $specializare=$semigrupa;
+        }
+
+
 
         $sql = "SELECT* 
         FROM orar 
@@ -174,39 +179,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             AND materi.id_materie = ? ";
 
                   if($semigrupa==='An_I_mICAI'){
-                  $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_I_sgr1'";
-                  $sem='mICAI_I_sgr1';
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_I_sgr1'";
+                    $semigrupa='mICAI_I_sgr1';
                   }
                   else if($semigrupa==='An_II_mICAI'){
                     $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_II_sgr1'";
-                    $sem='mICAI_II_sgr1';
+                    $semigrupa='mICAI_II_sgr1';
                   }
                   else if($semigrupa==='An_I_mACS'){
                     $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_I_sgr1'";
-                    $sem='mACS_I_sgr1';
+                    $semigrupa='mACS_I_sgr1';
                   }
                   else if($semigrupa==='An_II_mACS'){
                     $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_II_sgr1'";
-                    $sem='mACS_II_sgr1';
+                    $semigrupa='mACS_II_sgr1';
                   }
                   else if($semigrupa==='An_I_mES'){
                     $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_I_sgr1'";
-                    $sem='mES_I_sgr1';
+                    $semigrupa='mES_I_sgr1';
                   }
                   else if($semigrupa==='An_II_mES'){
                     $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_II_sgr1'";
-                    $sem='mES_II_sgr1';
+                    $semigrupa='mES_II_sgr1';
                   }
                   else if($semigrupa==='An_I_mAAIE'){
                     $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_I_sgr1'";
-                    $sem='mAAIE_I_sgr1';
+                    $semigrupa='mAAIE_I_sgr1';
                   }
                   else if($semigrupa==='An_II_mAAIE'){
                     $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_II_sgr1'";
-                    $sem='mAAIE_II_sgr1';
+                    $semigrupa='mAAIE_II_sgr1';
                   }
                   else{
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa=$semigrupa";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='$semigrupa'";
                   }
 
         $result4 = $db->query($sql_count);
@@ -227,7 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                  // Adding <br> to ensure each detail starts on a new line
                 echo "<span style='margin-right: 16px;'><strong>An de studiu:</strong> " . htmlspecialchars($details['id_an']). "</span>" ;
                 echo "<span style='margin-right: 16px;'><strong>Semestru:</strong> " . htmlspecialchars($details['sem']). "</span>";
-                echo "<span style='margin-right: 16px;'><strong>Semigrupa:</strong> " . htmlspecialchars($details['nume_ns']). "</span>" ;
+                echo "<span style='margin-right: 16px;'><strong>Semigrupa:</strong> " . htmlspecialchars($semigrupa). "</span>" ;
                 echo "<span style='margin-right: 16px;'><strong>Specializare:</strong> " . htmlspecialchars($specializare) . "</span>";
                 echo "<span style='margin-right: 16px;'><strong>Numar studenti:</strong> " . htmlspecialchars($numar_studenti);
                 echo "</div>"; // Closing div for details
@@ -295,7 +300,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         FROM student s
                         LEFT JOIN users u ON s.email = u.email
                         LEFT JOIN note n ON s.id_student = n.id_student AND n.id_materie =$id_materie
-                        WHERE s.grupa ='$sem'";
+                        WHERE s.grupa ='$semigrupa'";
 
               
             if ($stmt_students = $db->prepare($sql_students)) {
@@ -305,12 +310,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
               echo "<table border='2' style='width: 100%;'>";
               echo "<tr>";
-              echo "<th style='width: 10%;'>Nume</th>";       // Set width to 15%
-              echo "<th style='width: 10%;'>Prenume</th>";    // Set width to 15%
-              echo "<th style='width: 20%;'>Email</th>";      // Set width to 20%
-              echo "<th style='width: 10%;'>Status</th>";       // Set width to 20%
-              echo "<th style='width: 20%;'>Nota</th>";       // Set width to 20%
-              echo "<th style='width: 30%;'>Acțiuni</th>";    // Width already set to 30%
+              echo "<th style='width: 10%;'>Nume</th>";       
+              echo "<th style='width: 10%;'>Prenume</th>";    
+              echo "<th style='width: 20%;'>Email</th>";     
+              echo "<th style='width: 10%;'>Status</th>";       
+              echo "<th style='width: 20%;'>Nota</th>";       
+              echo "<th style='width: 30%;'>Acțiuni</th>";   
               echo "</tr>";
               while ($row_student = $result_students->fetch_assoc()) {
                   echo "<tr>";
@@ -320,7 +325,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   $status = htmlspecialchars($row_student['terminat']) == 1 ? 'terminat' : 'neterminat';
                   echo "<td>" . $status . "</td>";
                   
-                  // Adaugă coloana pentru nota, presupunând că există o variabilă disponibilă sau o logica suplimentară pentru a determina nota
                   if (isset($row_student['nota']) && !empty($row_student['nota'])) {
                           echo "<td style='text-align:center;'>" . htmlspecialchars($row_student['nota']);
                           echo "<form action='note_action.php' method='post'>";
@@ -412,7 +416,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       }
                       echo "<td>" . $row['data_incarcarii'] . "</td>";
                       echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
-                      echo "<td></td>";//de adaugat!
+                      echo "<td>" . htmlspecialchars($row['descriere']) . "</td>";
                       echo "</tr>";
                   }
                   
@@ -554,7 +558,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               }
               echo "<td>" . $row['data_incarcarii'] . "</td>";
               echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
-              echo "<td></td>";//de adaugat!
+              echo "<td>" . htmlspecialchars($row['descriere']) . "</td>";
               echo "</tr>";
           }
           

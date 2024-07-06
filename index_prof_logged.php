@@ -79,7 +79,7 @@ $nume_prof=$developer['nume'];
     WHERE (profesori.dep='0' OR profesori.dep='1') 
           AND orar.id_tip='4' 
           AND profesori.nume='$nume_prof'
-    ORDER BY nume";
+    ORDER BY nume_ns";
   $result_profesor = $db->query($sql3);
 
 
@@ -166,31 +166,31 @@ thead {
                 do{
                   $semigrupa=$developer['nume_ns'];
                   if($semigrupa==='An_I_mICAI'){
-                  $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_I_sgr'";
+                  $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_I_sgr1'";
                   }
                   else if($semigrupa==='An_II_mICAI'){
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_II_sgr'";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mICAI_II_sgr1'";
                   }
                   else if($semigrupa==='An_I_mACS'){
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_I_sgr'";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_I_sgr1'";
                   }
                   else if($semigrupa==='An_II_mACS'){
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_II_sgr'";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mACS_II_sgr1'";
                   }
                   else if($semigrupa==='An_I_mES'){
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_I_sgr'";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_I_sgr1'";
                   }
                   else if($semigrupa==='An_II_mES'){
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_II_sgr'";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mES_II_sgr1'";
                   }
                   else if($semigrupa==='An_I_mAAIE'){
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_I_sgr'";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_I_sgr1'";
                   }
                   else if($semigrupa==='An_II_mAAIE'){
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_II_sgr'";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='mAAIE_II_sgr1'";
                   }
                   else{
-                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa=$semigrupa";
+                    $sql_count = "SELECT COUNT(*) AS numar_studenti FROM student WHERE grupa='$semigrupa'";
                   }
 
                   
@@ -216,7 +216,7 @@ thead {
               $sql_locuri = "SELECT locuri.id_specializare, specializare.denumire, locuri.locuri_disponibile, locuri.locuri_ocupate
               FROM locuri 
               JOIN specializare ON specializare.id_specializare = locuri.id_specializare
-              WHERE locuri.id_profesor_depcie = $id_profesor_depcie";
+              WHERE locuri.id_profesor_depcie = $id_profesor_depcie ORDER BY denumire";
               $result_locuri = $db->query($sql_locuri);
                   echo "<table class='custom-table' style='width: 100%;'>";
                   echo "<thead>";

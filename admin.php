@@ -139,7 +139,7 @@ $secretary = $result_secretary->fetch_assoc();
   </form>
   <br>
   <form method="POST" action="" class="form-inline">
-    <label for="sort">Sort by: </label>
+    <label for="sort">Sortează în funcție de: </label>
     <select name="sort" id="sort" class="form-control form-control-inline">
       <option value="id_student" <?php if ($sort_field == 'id_student') echo 'selected'; ?>>ID</option>
       <option value="nume" <?php if ($sort_field == 'nume') echo 'selected'; ?>>Nume</option>
@@ -151,15 +151,15 @@ $secretary = $result_secretary->fetch_assoc();
   </form>
   <br>
   <table class="table table-striped">
-    <thead>
+    <thead class="fixed-header" >
       <tr>
-        <th>id_student</th>
-        <th>nume</th>
-        <th>prenume</th>
-        <th>specializare</th>
-        <th>an</th>
-        <th>email</th>
-        <th>grupa</th>
+        <th>Id_student</th>
+        <th>Nume</th>
+        <th>Prenume</th>
+        <th>Specializare</th>
+        <th>An</th>
+        <th>Email</th>
+        <th>Grupa</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -189,8 +189,9 @@ $secretary = $result_secretary->fetch_assoc();
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>nume</th>
-          <th>prenume</th>
+          <th>Pume</th>
+          <th>Nrenume</th>
+          <th>Email</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -198,6 +199,7 @@ $secretary = $result_secretary->fetch_assoc();
         <tr>
           <td><input type="text" name="nume" value="<?php echo $secretary['nume']; ?>" class="form-control"></td>
           <td><input type="text" name="prenume" value="<?php echo $secretary['prenume']; ?>" class="form-control"></td>
+          <td style="padding-top: 23px;"><a href="mailto:<?php echo $secretary['email']; ?>"><?php echo $secretary['email']; ?></a></td>
           <td>
             <input type="hidden" name="id_management" value="<?php echo $secretary['id_management']; ?>">
             <input type="hidden" name="action" value="edit_secretary">

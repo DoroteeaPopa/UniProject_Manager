@@ -438,7 +438,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $id_materie=$details['id_materie'];
                 $sql_cerinte = "SELECT * FROM cerinte 
                 CROSS JOIN taskuri ON cerinte.id_task = taskuri.id_task
-                WHERE cerinte.id_materie = $id_materie AND cerinte.id_student = 3";
+                WHERE cerinte.id_materie = $id_materie AND cerinte.id_student =$id_student";
 
             
                 $result_cerinte = $db->query($sql_cerinte);
@@ -470,11 +470,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h4 style="text-align: center;">Cerinte de proiect</h4>
                 <form action="" method="post">
                     <?php
+                    $id=170;
                     while ($row = mysqli_fetch_assoc($result_cerinte)) {
                         $checked = $row['indeplinire'] == 1 ? 'checked' : '';
                         echo "<div class='form-check'>";
                         echo "<input class='form-check-input' type='checkbox' name='task[" . $row['id_cerinte'] . "]' value='1' $checked>";
                         echo "<label class='form-check-label'>" . htmlspecialchars($row['task']) . "</label>";
+                        echo '<input type="hidden" name="id_student" value="' . htmlspecialchars($id_student) . '">';
+                        echo '<input type="hidden" name="id_materie" value="' . htmlspecialchars($id_materie) . '">'; 
                         echo "</div>";
                     }
                     ?>

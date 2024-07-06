@@ -17,7 +17,7 @@
 
 <style>
   #archiveInput {
-    display: none;  /* Ascunde input-ul original */
+    display: none;  
   }
 
   .custom-file-upload {
@@ -25,15 +25,15 @@
     padding: 8px 16px;
     cursor: pointer;
     background-color: #f8f8f8;
-    color: #0D3165; /* Aplică stilul dorit aici */
+    color: #0D3165; 
     border: 1px solid #ccc;
     border-radius: 8px;
   }
 
 
   h2 {
-    color: #0D3165; /* Deep blue for headings */
-    border-bottom: 2px solid #f8f8f8; /* Subtle underline */
+    color: #0D3165; 
+    border-bottom: 2px solid #f8f8f8;
     padding-bottom: 10px;
   }
 
@@ -45,17 +45,17 @@
   }
 
   th, td {
-    border: 1px solid #dee2e6; /* Bootstrap-like table borders */
+    border: 1px solid #dee2e6; 
     padding: 8px;
     text-align: left;
   }
 
   th {
-    background-color: #f8f8f8; /* Light grey background for headers */
+    background-color: #f8f8f8;
   }
 
   td {
-    background-color: #FAFAFA; /* Very light grey background for cells */
+    background-color: #FAFAFA;
   }
 
   .custom-file-upload {
@@ -337,7 +337,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['arhive'])) {
                 }
                 echo "<td>" . $row['data_incarcarii'] . "</td>";
                 echo "<td><img src='image.png' alt='poza_arhiva'><a href='" . htmlspecialchars($row['arhiva']) . "'>" . basename($row['arhiva']) . "</a></td>";
-                echo "<td></td>";//de adaugat!
+                echo "<td>" . htmlspecialchars($row['descriere']) . "</td>";
                 echo "</tr>";
             }
             

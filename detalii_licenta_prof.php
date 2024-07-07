@@ -207,7 +207,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['arhive'])) {
                echo "<input type='hidden' name='id_specializare' value='" . $id_specializare . "'>";
                echo "</td>";
                echo "<td>";
-               echo "<button type='submit' name='editLocuri' style='width: 100%;'>Editează</button>";
+               echo "<button type='submit' name='editLocuri' style='width: 100%; background-color: green;'>Editează</button>";
                echo "</td>";
                echo "</form> ";
                echo "</tr>";
@@ -249,13 +249,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['arhive'])) {
                echo "<input type='hidden' name='id_tema' value='" . $row['id_tema'] . "'>";
                echo "<input type='hidden' name='id_profesor_depcie' value='" . $id_profesor_depcie . "'>";
                echo "<input type='hidden' name='id_specializare' value='" . $id_specializare . "'>";
-               echo "<button type='submit' style='width: 100%;'>Editează</button>";
+               echo "<button type='submit' style='width: 100%; background-color: green;'>Editează</button>";
                echo "</form> ";
                echo "<form action='temeActions.php?action=delete' method='post'>";
                echo "<input type='hidden' name='id_tema' value='" . $row['id_tema'] . "'>";
                echo "<input type='hidden' name='id_profesor_depcie' value='" . $id_profesor_depcie . "'>";
                echo "<input type='hidden' name='id_specializare' value='" . $id_specializare . "'>";
-               echo "<button type='submit' style='width: 100%;' onclick='return confirm(\"Ești sigur că vrei să ștergi această tema?\");'>Șterge</button>";
+               echo "<button type='submit' style='width: 100%; background-color: red;' onclick='return confirm(\"Ești sigur că vrei să ștergi această tema?\");'>Șterge</button>";
                echo "</form>";
                echo "</td>";
                echo "</tr>";

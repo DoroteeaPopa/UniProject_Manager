@@ -39,10 +39,10 @@
       <input type="text" placeholder="Email" name="email" required><br>
 
       <label for="uname" style="color:black;"><b>Nume de utilizator</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required>
+      <input type="text" placeholder="Introdu nume de utilizator" name="uname" required>
 
       <label for="password" style="color:black;"><b>Parola</b></label>
-      <input type="password" placeholder="Enter Password" name="password" required>
+      <input type="password" placeholder="Introdu parola" name="password" required>
 
       <label style="color: black;" for="status">Statutul:</label>
       <select style="color: black;" name="status" id="status">

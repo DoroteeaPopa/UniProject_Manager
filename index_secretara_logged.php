@@ -164,20 +164,20 @@ while ($row = $result_profesori_depcie->fetch_assoc()) {
       <option value="an" <?php if ($sort_field == 'an') echo 'selected'; ?>>An</option>
       <option value="grupa" <?php if ($sort_field == 'grupa') echo 'selected'; ?>>Grupa</option>
     </select>
-    <button type="submit" class="btn btn-primary">Sort</button>
+    <button type="submit" class="btn btn-primary">Sortează</button>
   </form>
   <br>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>id_student</th>
-        <th>nume</th>
-        <th>prenume</th>
-        <th>specializare</th>
-        <th>an</th>
-        <th>email</th>
-        <th>grupa</th>
-        <th>Actions</th>
+        <th>Id_student</th>
+        <th>Nume</th>
+        <th>Prenume</th>
+        <th>Specializare</th>
+        <th>An</th>
+        <th>Email</th>
+        <th>Grupa</th>
+        <th>Acțiuni</th>
       </tr>
     </thead>
     <tbody>
@@ -230,12 +230,12 @@ while ($row = $result_profesori_depcie->fetch_assoc()) {
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>id_profesor</th>
-        <th>nume</th>
-        <th>dep</th>
-        <th>email</th>
-        <th>coordonator</th>
-        <th>Actions</th>
+        <th>Id_profesor</th>
+        <th>Nume</th>
+        <th>Dep</th>
+        <th>Email</th>
+        <th>Coordonator</th>
+        <th>Acțiuni</th>
       </tr>
     </thead>
     <tbody>

@@ -36,15 +36,13 @@ include("config.php");
 $sql = "SELECT * FROM profesori_depcie CROSS JOIN profesori ON profesori_depcie.id_profesor=profesori.id_profesor WHERE profesori_depcie.email = '$x'";
 $result_profesori = $db->query($sql);
 
-
-$sql2 = "SELECT * FROM users WHERE users.email = '$x'";
-$result_users = $db->query($sql2);
-
 $developer = mysqli_fetch_assoc($result_profesori);
 $nume_prof=$developer['nume'];
 $id_profesor_depcie=$developer['id_profesor_depcie'];
 
 
+$sql2 = "SELECT * FROM users WHERE users.email = '$x'";
+$result_users = $db->query($sql2);
 
   $sql3 ="SELECT* 
     FROM orar 
@@ -61,7 +59,7 @@ $id_profesor_depcie=$developer['id_profesor_depcie'];
   $sql4="SELECT * FROM locuri 
     CROSS JOIN specializare ON specializare.id_specializare=locuri.id_specializare
     WHERE id_profesor_depcie=$id_profesor_depcie";
-  $_licenta = $db->query($sql4);
+  $result_licenta = $db->query($sql4);
 $db->close();
 ?>
 
@@ -110,7 +108,7 @@ $db->close();
         ?>
 
         <?php
-        while ($developer = mysqli_fetch_assoc($_licenta)){?>
+        while ($developer = mysqli_fetch_assoc($result_licenta)){?>
           <div class="card licenta" id="<?php echo $developer['id_locuri']; ?>" onclick="window.location.href='detalii_licenta_prof.php?id_profesor_depcie=<?php echo $developer['id_profesor_depcie']; ?>&id_specializare=<?php echo $developer['id_specializare']; ?>'">
             <h3>Licenta</h3>
             <p><strong>Profesor:</strong> <?php echo $nume_prof; ?></p>

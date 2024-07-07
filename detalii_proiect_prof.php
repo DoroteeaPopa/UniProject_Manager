@@ -257,14 +257,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
                   echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
                   echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
-                  echo "<button type='submit' style='width: 100%;'>Editează</button>";
+                  echo "<button type='submit' style='width: 100%; background-color: green;'>Editează</button>";
                   echo "</form> ";
                   echo "<form action='cerinteActions.php?action=delete' method='post'>";
                   echo "<input type='hidden' name='id_task' value='" . $row['id_task'] . "'>";
                   echo "<input type='hidden' name='id_materie' value='" . $id_materie . "'>";
                   echo "<input type='hidden' name='id_profesor' value='" . $id_profesor . "'>";
                   echo "<input type='hidden' name='semigrupa' value='" . $semigrupa . "'>";
-                  echo "<button type='submit' style='width: 100%;' onclick='return confirm(\"Ești sigur că vrei să ștergi această cerință?\");'>Șterge</button>";
+                  echo "<button type='submit' style='width: 100%; background-color: red;' onclick='return confirm(\"Ești sigur că vrei să ștergi această cerință?\");'>Șterge</button>";
                   echo "</form>";
                   echo "</td>";
                   echo "</td>";

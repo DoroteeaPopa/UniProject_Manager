@@ -59,20 +59,6 @@
       <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
     </div>
 
-    <?php
-$fullurl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-if(strpos($fullurl, "email=gresit") == true)
-{
-    echo "<p class=\"eroare\"> Emailul exista!</p>";
-    exit();
-}
-else if(strpos($fullurl, "username=gresit") == true)
-{
-    echo "<p class=\"eroare\">User name exista</p>";
-}
-
-
-?>
   </form>
 </div>
 

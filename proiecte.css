@@ -2,40 +2,40 @@
        .container {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px; /* Spațiu mai mare între carduri pentru un aspect mai aerisit */
-        justify-content: center; /* Centrarea cardurilor în container */
+        gap: 20px; 
+        justify-content: center; 
     }
     
     /* Stilizare pentru fiecare card */
     .card {
-        width: calc(50% - 10px); /* Ajustare a lățimii pentru a menține două coloane */
-        border: none; /* Înlăturarea border-ului clasic */
-        border-radius: 10px; /* Margini mai rotunjite */
+        width: calc(50% - 10px); 
+        border: none;
+        border-radius: 10px;
         padding: 20px;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); /* Umbră mai subtilă și modernă */
-        text-align: left; /* Alinierea textului la stânga */
-        background: white; /* Fundal alb pentru un aspect curat */
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Tranziții pentru efecte vizuale plăcute */
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); 
+        text-align: left; 
+        background: white; 
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
     }
     
     /* Efect la hover pentru carduri */
     .card:hover {
-        transform: translateY(-5px); /* Ridică ușor cardul */
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Umbră mai accentuată la hover */
+        transform: translateY(-5px); 
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); 
     }
     
     /* Stilizare pentru titlu */
     .card h3 {
-        color: #333; /* O nuanță mai întunecată pentru mai mult contrast */
-        margin-bottom: 12px; /* Spațiu mai mare sub titlu */
-        font-size: 24px; /* Mărime mai mare pentru titlu */
+        color: #333; 
+        margin-bottom: 12px; 
+        font-size: 24px; 
     }
     
     /* Stilizare pentru conținut */
     .card p {
-        margin: 5px 0 0; /* Reducerea spațiului vertical */
-        color: #666; /* Text mai deschis pentru o citire ușoară */
-        font-size: 16px; /* Mărime standardizată pentru text */
+        margin: 5px 0 0; 
+        color: #666; 
+        font-size: 16px; 
     }
     
     /* Stilizare specifică pentru carduri în funcție de anul cursului */

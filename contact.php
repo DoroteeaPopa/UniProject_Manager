@@ -11,7 +11,6 @@
 <style>
         body {
   font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
 }
 
 .card-title {
@@ -24,15 +23,15 @@
 }
 
 .btn-primary {
-  background-color: #606c81b3; /* Culoarea de fundal specificată */
+  background-color: #606c81b3; 
   border: none;
   color: #fff;
 }
 
 .btn-primary:hover,
 .btn-primary:active {
-  background-color: #606c81b3; /* Aceeași culoare la hover și active */
-  opacity: 0.8; /* Opacitate la hover și active */
+  background-color: #606c81b3; 
+  opacity: 0.8; 
 }
 
 #despre-noi {
@@ -45,13 +44,13 @@
 }
 
 .btn-secondary {
-  font-size: 0.875rem; /* Smaller font size */
-  padding: 0.25rem 0.5rem; /* Smaller padding */
+  font-size: 0.875rem; 
+  padding: 0.25rem 0.5rem; 
 }
 
 .btn-container {
   display: flex;
-  gap: 0.5rem; /* Space between buttons */
+  gap: 0.5rem; 
   margin-top: 1rem;
 }
 </style>

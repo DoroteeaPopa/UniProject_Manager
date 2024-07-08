@@ -3,33 +3,29 @@
   text-decoration-line: none;
 }
 
-.active2 {
-  background-color: #aa0478;
-  text-decoration-line: none;
-}
 
 .header {
-  display: flex; /* Folosim Flexbox pentru o gestionare mai bună a spațiului */
-  align-items: center; /* Centrăm elementele pe verticală */
-  justify-content: space-between; /* Distribuie conținutul la extremitățile containerului */
-  padding: 10px 20px; /* Adaugă un spațiu în interiorul header-ului */
+  display: flex;
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 10px 20px; 
   background-color: #0D3165; 
 }
 
 .header h1 {
-  font-family: 'Arial', sans-serif; /* Mențineți un font modern și clar */
+  font-family: 'Arial', sans-serif;
   font-size: 24px;
   font-weight: bold;
   color: #ffffff;
   margin: 0;
-  padding-right: 60px; /* Ajustează în funcție de necesități */
-  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.168); /* Adaugă o umbră la text */
+  padding-right: 60px; 
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.168); 
 }
 
 
 .header img {
-  height: 80px; /* Mărește înălțimea imaginii */
-  width: auto; /* Menține proporțiile corecte ale imaginii */
+  height: 80px; 
+  width: auto; 
 }
 
 
@@ -103,7 +99,6 @@ li a:hover:not(.active) {
 
 
 
-/* Layout principal */
 .container {
   width: 80%;
   margin: 0 auto;
